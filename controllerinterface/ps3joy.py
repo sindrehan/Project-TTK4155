@@ -17,12 +17,15 @@ try:
     print "Press CTRL+C to quit"
     # events = pygame.event.get()
     while True:
-        print 
-        for i in range (20):
-           print "Button {0}: {1}\n".format(i, pygame.get_button(i))
+        # print 
+        # for i in range (20):
+        #    print "Button {0}: {1}\n".format(i, joystick.get_button(i))
+        print "Button 14: "
+        print joystick.get_button(14)
+        print
         
-
     
 except KeyboardInterrupt:
     #CTRL+C exit
     print
+    
