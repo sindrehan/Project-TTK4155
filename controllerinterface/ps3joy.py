@@ -13,18 +13,29 @@ pygame.joystick.init()
 joystick = pygame.joystick.Joystick(0)
 joystick.init()
 
+clear = lambda: os.system('clear')
+
 try:
-    print "Press CTRL+C to quit"
-    # events = pygame.event.get()
+    values = [0]*23
+    axes = joystick.get_numaxes()
+    buttons = joystick.get_numbuttons()
     while True:
-        # print 
-        # for i in range (20):
-        #    print "Button {0}: {1}\n".format(i, joystick.get_button(i))
-        print "Button 14: "
-        print joystick.get_button(14)
-        print
-        
-    
+        #hadEvent = False
+        #events = pygame.event.get()
+        #for event in events:
+        #    if event.type = JOYBUTTONDOWN:
+        for i in range(4):
+            values[i] = joystick.get_axis(i)
+        for i in range(16):
+            values[i+4] = joystick.get_button(i)
+
+        clear()
+        print "Press CTRL+C to quit"
+        print "Axes: ", axes
+        print "Buttons: ", buttons
+        print values
+        time.sleep(0.1)
+
 except KeyboardInterrupt:
     #CTRL+C exit
     print
