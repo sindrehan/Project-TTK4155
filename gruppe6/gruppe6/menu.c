@@ -2,9 +2,12 @@
 #include "menu.h"
 
 
-void menu_print(int arrow_pos, int menu_size, char* menu_items[])
+void menu_print(int arrow_pos, char* menu_items[])
 {
-	for(int i = 0; i < menu_size; i++){
+	uint8_t menu_size = *menu_items[0];
+	OLED_pos(0,0);
+	OLED_print_string(menu_items[1]);
+	for(int i = 2; i < (2 + menu_size); i++){
 		OLED_pos(i,0);
 		if(i == arrow_pos){
 			OLED_print_string("->");
@@ -17,14 +20,15 @@ void menu_print(int arrow_pos, int menu_size, char* menu_items[])
 	}
 }
 
-int menu_move_selector(char* menu[], int menu_size){
-	int arrow = 0;
+int menu_move_selector(char* menu[]){
+	uint8_t menu_size = *menu[0];
+	int arrow = 2;
 	int neutral_counter = 0;
 	JOY_direction_t prev_dir = NEUTRAL;
 	while(1){
 		switch(Joy_getDirection()){
 			case UP:
-			if ((arrow > 0) & (prev_dir == NEUTRAL)){
+			if ((arrow > 2) & (prev_dir == NEUTRAL)){
 				arrow--;
 				prev_dir = UP;
 			}
@@ -47,6 +51,6 @@ int menu_move_selector(char* menu[], int menu_size){
 			while(!JOY_button(2)){}
 			return arrow;
 		}
-		menu_print(arrow, menu_size, menu);
+		menu_print(arrow, menu);
 	}
 }
