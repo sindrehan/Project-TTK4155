@@ -16,8 +16,7 @@ void motor_init(){
 	PORTF	|= (1 << PF7)
 			|  (1 << PF6)
 			|  (1 << PF4);
-			
-	_delay_us(20);
+
 }
 
 
@@ -40,11 +39,12 @@ int16_t motor_read(){
 	PORTF &= ~(1 << PF7);
 	PORTF &= ~(1 << PF5);
 	_delay_us(20);
-	data = motor_reverse(PINK)*0x100;
+	data = PINK*0x100;
 	PORTF |= (1 << PF5);
 	_delay_us(20);
-	data += motor_reverse(PINK);
-	motor_reset_encoder();
+	data += PINK;
+	PORTF &=  ~(1 << PF6);
+	PORTF |=  (1 << PF6);
 	PORTF |= (1 << PF7);
 	return data;
 }	
@@ -55,20 +55,3 @@ uint8_t motor_reverse (uint8_t data){
 		data = ((data >> 4) & 0x0f) | ((data << 4) & 0xf0);
 		return data;
 }
-
-void motor_reset_encoder (){
-	PORTF &=  ~(1 << PF6);
-	_delay_us(20);
-	PORTF |=  (1 << PF6);
-}
-
-void motor_calibrate(){
-	motor_write(85, 1);
-	_delay_ms(10);
-	while (motor_read()<0){
-		printf("Motor: %d\n", motor_read());
-	}
-	motor_write(0, 0);
-	motor_reset_encoder();
-}
-

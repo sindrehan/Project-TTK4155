@@ -15,7 +15,7 @@
 
 void test_adc();
 void test_joystick();
-//void test_oled_menu();
+void test_oled_menu();
 void test_mcp();
 void test_can();
 

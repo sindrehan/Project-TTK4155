@@ -10,56 +10,40 @@
 #include "oled_driver.h"
 
 
-
 int main(void)
 {	
+	
+	char* main_menu[] = {3, "Main Menu", "New game", "Options", "Back"};
+	char* new_game[] = {3, "New Game", "Single player", "Double player", "Back"};
+	char* single_player[] = {1, "I", "Single player", "Double player", "Back"};
 	int ubrr = (F_CPU/16/9600)-1;
 	UART_Init(ubrr);
 	
-	can_init(MODE_NORMAL);
-	JOY_init();
-	OLED_init();
-	menuitem* current_menu = menu_init();
-	uint8_t prev_dir = NEUTRAL;
-	//current_menu = current_menu->submenus.entries[0];
-
+	//can_init(MODE_NORMAL);
+	//JOY_init();
+	//OLED_init();	
+	test_oled_menu();
 	//can_message_t commands = (can_message_t){
 		//.id = 0x01,
-		//.length = 7,
-		//.data = {0,0,	//x,y
-				 //0,0,	//Left/Right button
-				 //0,		//Joybutton
-				 //0,0,	//Left/Right slider
-				 //},
+		//.length = 5,
+		//.data = {0, 0,	//Joystick positions
+				 //0, 0,	//Left and right button
+				 //0,		//Joystick button
+				//},
 	//};
 	//
-	can_message_t setup = (can_message_t){
-		.id = 0x02,
-		.length = 4,
-		.data = {0, //Players
-			0,	//Control type
-			0,	//Controller
-		},
-	};
-	//
 	//JOY_position_t pos;
-	
-	while(1){	
-		
+	//
+	//while(1){
 		//pos = JOY_getPosition();
 		//commands.data[0] = pos.x;
 		//commands.data[1] = pos.y;
 		//commands.data[2] = JOY_button(0);
 		//commands.data[3] = JOY_button(1);
 		//commands.data[4] = JOY_button(2);
-		//commands.data[5] = ADC_read(2);
-		//commands.data[6] = ADC_read(3);
+		//printf("JOy button: %d\n",commands.data[4]);
 		//can_transmit(commands);
-
-		menu_print(current_menu);
-		//printf("HEI\n");
-		current_menu = menu_move(current_menu, &prev_dir, &setup);
-	}
+	//}
 	
 	
 	

@@ -55,10 +55,10 @@ void can_printmsg(can_message_t m){
 		m.id, m.length
 		);
 		if(m.length){
-			printf("%d", m.data[0]);
+			printf("%x", m.data[0]);
 		}
 		for(uint8_t i = 1; i < m.length; i++){
-			printf(", %d", m.data[i]);
+			printf(", %x", m.data[i]);
 		}
 	printf("}\n");
 }

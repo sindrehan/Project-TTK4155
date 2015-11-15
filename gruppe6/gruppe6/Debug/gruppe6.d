@@ -20,9 +20,8 @@ gruppe6.d gruppe6.o: .././gruppe6.c \
  c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1061\avr8-gnu-toolchain\avr\include\stdlib.h \
  .././adc_driver.h .././joystick.h \
  c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1061\avr8-gnu-toolchain\lib\gcc\avr\4.8.1\include\stdbool.h \
- .././test.h .././oled_driver.h .././menu.h .././can.h \
- .././mcp2515_driver.h .././SPI_driver.h .././MCP2515.h \
- c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1061\avr8-gnu-toolchain\avr\include\string.h
+ .././test.h .././oled_driver.h .././menu.h .././mcp2515_driver.h \
+ .././SPI_driver.h .././can.h .././MCP2515.h
 
 c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1061\avr8-gnu-toolchain\avr\include\avr\io.h:
 
@@ -76,12 +75,10 @@ c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1061\avr8-g
 
 .././menu.h:
 
-.././can.h:
-
 .././mcp2515_driver.h:
 
 .././SPI_driver.h:
 
-.././MCP2515.h:
+.././can.h:
 
-c:\program\ files\ (x86)\atmel\atmel\ toolchain\avr8\ gcc\native\3.4.1061\avr8-gnu-toolchain\avr\include\string.h:
+.././MCP2515.h:

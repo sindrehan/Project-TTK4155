@@ -64,28 +64,28 @@ void test_joystick(){
 	}
 }
 
-//void test_oled_menu(){
-	//JOY_init();
-	//OLED_init();
-	//char* main_menu[] = {"Submenu1", "Submenu2", "Submenu3"};
-	//char* sub1[] = {"Back to main", "Option 1", "Option 2", "Option 3"};
-	//char* sub2[] = {"Back to main", "Option 1", "Option 2", "Option 3"};
-	//char* sub3[] = {"Back to main", "Option 1", "Option 2", "Option 3"};
-	//
-	//while(1){
-		//switch(menu_move_selector(main_menu)){
-			//case 0:
-			//printf("Sub1, option %d\n", menu_move_selector(sub1));
-			//break;
-			//case 1:
-			//printf("Sub2, option %d\n", menu_move_selector(sub2));
-			//break;
-			//case 2:
-			//printf("Sub3, option %d\n", menu_move_selector(sub3));
-			//break;
-		//}
-	//}
-//}
+void test_oled_menu(){
+	JOY_init();
+	OLED_init();
+	char* main_menu[] = {"Submenu1", "Submenu2", "Submenu3"};
+	char* sub1[] = {"Back to main", "Option 1", "Option 2", "Option 3"};
+	char* sub2[] = {"Back to main", "Option 1", "Option 2", "Option 3"};
+	char* sub3[] = {"Back to main", "Option 1", "Option 2", "Option 3"};
+	
+	while(1){
+		switch(menu_move_selector(main_menu, 3)){
+			case 0:
+			printf("Sub1, option %d\n", menu_move_selector(sub1, 3));
+			break;
+			case 1:
+			printf("Sub2, option %d\n", menu_move_selector(sub2, 3));
+			break;
+			case 2:
+			printf("Sub3, option %d\n", menu_move_selector(sub3, 3));
+			break;
+		}
+	}
+}
 
 void test_mcp(){
 	SPI_init();
