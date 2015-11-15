@@ -46,12 +46,15 @@ int main(void)
 	
 	while(1){
 		can_message_t msg_received = can_receive();
-		if (msg_received.id == 0x03){
-			time[0] = msg_received.data[0];
-			time[1] = msg_received.data[1];
-			time[2] = msg_received.data[2];
+		switch (msg_received.id){
+			case 0x03:
+				for (uint8_t i = 0; i < 3; i++){
+					time[i] = msg_received[i];
+				}
+				break;
+			case 0x04:
+				break;
 		}
-		
 		
 		switch (settings[0]){
 			case MAINMENU:
