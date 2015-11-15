@@ -4,7 +4,7 @@
 
 #include "oled_driver.h"
 #include "can.h"
-#include "definations.h"
+#include "definitions.h"
 #include <string.h>
 #include <stdlib.h>
 
@@ -38,7 +38,7 @@ void menu_player_select(uint8_t choice, uint8_t *setup);
 void menu_control_select(uint8_t choice, uint8_t *setup);
 void menu_joystick_select(uint8_t choice, uint8_t *setup);
 
-
+void menu_print_singleplayer(uint8_t *time);
 
 
 #endif /* MENU_H_ */

@@ -132,7 +132,7 @@
     <Compile Include="can.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="definations.h">
+    <Compile Include="definitions.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="font_8x8.h">

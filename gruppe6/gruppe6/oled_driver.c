@@ -125,10 +125,3 @@ void OLED_print_string(char string[]){
 	}
 }
 
-void print_singleplayer(){
-	OLED_home();
-	OLED_print_string("Single player");
-	OLED_clear_rest_of_line();
-	OLED_print_string("Time: ");
-
-}

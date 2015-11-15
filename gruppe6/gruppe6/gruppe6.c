@@ -8,7 +8,7 @@
 #include "joystick.h"
 #include "test.h"
 #include "oled_driver.h"
-#include "definations.h"
+#include "definitions.h"
 
 
 
@@ -16,7 +16,6 @@ int main(void)
 {	
 	int ubrr = (F_CPU/16/9600)-1;
 	UART_Init(ubrr);
-	
 	can_init(MODE_NORMAL);
 	JOY_init();
 	OLED_init();
@@ -24,16 +23,14 @@ int main(void)
 	
 	JOY_position_t pos;
 	
-	uint8_t settings[] = {	MAINMENU,  // Game mode
-						SPEEDCTRL, // Control type
-						MULTICARD  // Joystick type
+	uint8_t settings[] = {	MAINMENU,  // Game state
+							SPEEDCTRL, // Control type
+							MULTICARD  // Joystick type
 	};
 	
 	uint8_t time[] = { 0,0,0 };	
 		
 	uint8_t prev_dir = NEUTRAL;
-	
-	can_message_t msg_received;
 
 	can_message_t msg_commands = (can_message_t){
 		.id = 0x01,
@@ -48,7 +45,7 @@ int main(void)
 
 	
 	while(1){
-		msg_received = can_receive();
+		can_message_t msg_received = can_receive();
 		if (msg_received.id == 0x03){
 			time[0] = msg_received.data[0];
 			time[1] = msg_received.data[1];
@@ -63,14 +60,35 @@ int main(void)
 				//printf("Setup: %d %d %d \n", settings[0], settings[1], settings[2]);
 				break;
 			case SINGLEPLAYERMENU:
-				print_singleplayer();
-				
+				menu_print_singleplayer(time);
+				if (JOY_button(0)){
+					settings[0] = MAINMENU;
+				}
+				if (time[0] < 60){
+					if (time[1] < 60){
+						if (time[2] < 100){
+							time[2]++;
+							} else {
+							time[2] = 0;
+							time[1]++;
+						}
+						} else{
+						time[1] = 0;
+						time[0]++;
+					}
+					} else {
+					time[0] = 0;
+					time[1] = 0;
+					time[2] = 0;
+				}
+				_delay_ms(5);
 				break;
 			case DOUBLEPLAYERMENU:
 				//Stuff to print
 				break;
 		}
 		
+
 		if (settings[0] == SINGLEPLAYERMENU || settings[0] == DOUBLEPLAYERMENU){
 			switch (settings[2]) {
 				case DUALSHOCK3:
@@ -84,7 +102,7 @@ int main(void)
 				msg_commands.data[4] = JOY_button(2);
 				msg_commands.data[5] = ADC_read(2);
 				msg_commands.data[6] = ADC_read(3);
-				can_transmit(msg_commands);				
+				can_transmit(msg_commands);
 				break;
 			}
 		}
@@ -99,14 +117,6 @@ int main(void)
 	
 }
 
-
-
-//Ch1 - AXIS1
-//Ch2 - AXIS2
-//Ch3 - BUTTON
-//
-//Left slider - PortB6
-//Right slider -  PortD2
 
 
 /* TODO

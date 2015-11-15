@@ -18,6 +18,5 @@ void OLED_go_to_col(char column);
 void OLED_clear_rest_of_line();
 void OLED_print(char character);
 void OLED_print_string(char string[]);
-void print_singleplayer();
 
 #endif /* OLED_DRIVER_H_ */

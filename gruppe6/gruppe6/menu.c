@@ -67,6 +67,7 @@ void menu_player_select(uint8_t choice, uint8_t *setup){
 		},
 	};
 	can_transmit(msg_setup);
+	OLED_reset();
 }
 
 void menu_control_select(uint8_t choice, uint8_t *setup){
@@ -94,10 +95,6 @@ menuitem* menu_init(){
 
 	menu_assign_parents_stdArrow(main_menu);
 	return main_menu;
-}
-
-menuitem* menu2_init(){
-	
 }
 
 void menu_assign_parents_stdArrow(menuitem* m){
@@ -168,4 +165,17 @@ menuitem* menu_move(menuitem* m, uint8_t* prev_dir, uint8_t *setup)
 	return m;
 }
 
+
+void menu_print_singleplayer(uint8_t *time)
+{
+	OLED_pos(0,0);
+	OLED_print_string("Single player\n");
+	OLED_pos(1,0);
+	char str[20];
+	sprintf(str, "Time: %02d:%02d:%02d\n", time[0], time[1], time[2]);
+	OLED_print_string(str);
+	
+	
+
+}
 
