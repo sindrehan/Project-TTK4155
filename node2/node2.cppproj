@@ -137,7 +137,7 @@
     <VMSETTING_IncludePaths>C:/Program Files (x86)/Arduino/hardware/arduino/avr/cores/arduino;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/mega;../../node2;C:/Program Files (x86)/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries;C:/Program Files (x86)/Visual Micro/Visual Micro for Arduino/Micro Platforms/default/debuggers;C:/Users/TEMP/Documents/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include/;C:/Program Files (x86)/Arduino/hardware/tools/avr//avr/include/avr/;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.8.1/include;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/yun;C:/Program Files (x86)/Visual Micro/Visual Micro for Arduino/Micro Platforms/default/debuggers/VM_DBG;C:/Program Files (x86)/Arduino/libraries/Servo/src;C:/Program Files (x86)/Arduino/libraries/Servo/src/utility;C:/Users/TEMP/Documents/Arduino/libraries/Timer3;C:/Users/TEMP/Documents/Arduino/libraries/Timer3/utility;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/utility;</VMSETTING_IncludePaths>
     <VisualMicroSettings>
       <VisualMicroSettings>
-        <arduino.upload.port>COM4</arduino.upload.port>
+        <arduino.upload.port>COM6</arduino.upload.port>
         <arduino.board.name>mega_atmega2560</arduino.board.name>
         <arduino.board.desc>Arduino Mega w/ ATmega2560 (Mega 2560)</arduino.board.desc>
         <arduino.board.property_bag>name=Arduino Mega w/ ATmega2560 (Mega 2560)
@@ -201,7 +201,7 @@ compiler.warning_flags.all=-Wall -Wextra
 compiler.path={runtime.tools.avr-gcc.path}/bin/
 compiler.c.cmd=avr-gcc
 compiler.c.flags=-c -g -Os {compiler.warning_flags} -ffunction-sections -fdata-sections -MMD
-compiler.c.elf.flags={compiler.warning_flags} -Os -Wl,--gc-sections
+compiler.c.elf.flags={compiler.warning_flags} -Os -Wl,--gc-sections,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax
 compiler.c.elf.cmd=avr-gcc
 compiler.S.flags=-c -g -x assembler-with-cpp
 compiler.cpp.cmd=avr-g++
@@ -303,6 +303,27 @@ vm.boardsource.path=C:\Program Files (x86)\Arduino\hardware\arduino\avr
 runtime.platform.path=C:\Program Files (x86)\Arduino\hardware\arduino\avr
 vm.platformname.name=avr
 build.arch=AVR
+build.architecture=avr
+vmresolved.compiler.path=C:\Program Files (x86)\Arduino\hardware\tools\avr\bin\
+vmresolved.tools.path=C:\Program Files (x86)\Arduino\hardware\tools\avr
+vm.runtime.compiler.showwarnings=false
+serial.port.file=COM6
+serial.port=COM6
+serial.port.num=6
+build.source.path=C:\Users\TEMP\Project-TTK4155\node2\node2.ino
+extra.time.local=49517999
+includes= -I"C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino"  -I"C:\Program Files (x86)\Arduino\hardware\arduino\avr\variants\mega"  -I"C:\Program Files (x86)\Arduino\libraries\Servo\src"  -I"C:\Users\TEMP\Documents\Arduino\libraries\Timer3"  -I"C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire"  -I"C:\Program Files (x86)\Arduino\libraries"  -I"C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries"  -I"C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers"  -I"C:\Users\TEMP\Documents\Arduino\libraries"  -I"C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire\utility"
+build.path=C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560
+build.project_name=node2
+build.variant.path=C:\Program Files (x86)\Arduino\hardware\arduino\avr\variants\mega
+build.core.path=C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino
+archive_file=core.a
+build.path_sketch=C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560
+build.path_core=C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560
+build.path_libraries=C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560
+object_file=C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\Wire\utility\twi.c.o
+source_file=C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire\utility\twi.c
+object_files="C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\node2.cpp.o" "C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\node2_can.cpp.o" "C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\node2_i2c.cpp.o" "C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\node2_ir.cpp.o" "C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\node2_mcp2515.cpp.o" "C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\node2_motorctrl.cpp.o" "C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\node2_servo.cpp.o" "C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\node2_spi.cpp.o" "C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\node2_test.cpp.o" "C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\Positioncontroller.cpp.o" "C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\Servo\avr\Servo.cpp.o" "C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\Servo\sam\Servo.cpp.o" "C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\Timer3\TimerThree.cpp.o" "C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\Wire\Wire.cpp.o" "C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\Wire\utility\twi.c.o" 
 </arduino.board.property_bag>
         <arduino.build.mcu>atmega2560</arduino.build.mcu>
         <arduino.build.f_cpu>16000000L</arduino.build.f_cpu>
@@ -414,7 +435,7 @@ build.arch=AVR
     <VMSETTING_IncludePaths>C:/Program Files (x86)/Arduino/hardware/arduino/avr/cores/arduino;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/mega;../../node2;C:/Program Files (x86)/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries;C:/Program Files (x86)/Visual Micro/Visual Micro for Arduino/Micro Platforms/default/debuggers;C:/Users/TEMP/Documents/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include/;C:/Program Files (x86)/Arduino/hardware/tools/avr//avr/include/avr/;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.8.1/include;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/yun;C:/Program Files (x86)/Visual Micro/Visual Micro for Arduino/Micro Platforms/default/debuggers/VM_DBG;C:/Program Files (x86)/Arduino/libraries/Servo/src;C:/Program Files (x86)/Arduino/libraries/Servo/src/utility;C:/Users/TEMP/Documents/Arduino/libraries/Timer3;C:/Users/TEMP/Documents/Arduino/libraries/Timer3/utility;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/utility;</VMSETTING_IncludePaths>
     <VisualMicroSettings>
       <VisualMicroSettings>
-        <arduino.upload.port>COM4</arduino.upload.port>
+        <arduino.upload.port>COM6</arduino.upload.port>
         <arduino.board.name>mega_atmega2560</arduino.board.name>
         <arduino.board.desc>Arduino Mega w/ ATmega2560 (Mega 2560)</arduino.board.desc>
         <arduino.board.property_bag>name=Arduino Mega w/ ATmega2560 (Mega 2560)
@@ -478,7 +499,7 @@ compiler.warning_flags.all=-Wall -Wextra
 compiler.path={runtime.tools.avr-gcc.path}/bin/
 compiler.c.cmd=avr-gcc
 compiler.c.flags=-c -g -Os {compiler.warning_flags} -ffunction-sections -fdata-sections -MMD
-compiler.c.elf.flags={compiler.warning_flags} -Os -Wl,--gc-sections
+compiler.c.elf.flags={compiler.warning_flags} -Os -Wl,--gc-sections,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax,--relax
 compiler.c.elf.cmd=avr-gcc
 compiler.S.flags=-c -g -x assembler-with-cpp
 compiler.cpp.cmd=avr-g++
@@ -580,6 +601,27 @@ vm.boardsource.path=C:\Program Files (x86)\Arduino\hardware\arduino\avr
 runtime.platform.path=C:\Program Files (x86)\Arduino\hardware\arduino\avr
 vm.platformname.name=avr
 build.arch=AVR
+build.architecture=avr
+vmresolved.compiler.path=C:\Program Files (x86)\Arduino\hardware\tools\avr\bin\
+vmresolved.tools.path=C:\Program Files (x86)\Arduino\hardware\tools\avr
+vm.runtime.compiler.showwarnings=false
+serial.port.file=COM6
+serial.port=COM6
+serial.port.num=6
+build.source.path=C:\Users\TEMP\Project-TTK4155\node2\node2.ino
+extra.time.local=49517999
+includes= -I"C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino"  -I"C:\Program Files (x86)\Arduino\hardware\arduino\avr\variants\mega"  -I"C:\Program Files (x86)\Arduino\libraries\Servo\src"  -I"C:\Users\TEMP\Documents\Arduino\libraries\Timer3"  -I"C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire"  -I"C:\Program Files (x86)\Arduino\libraries"  -I"C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries"  -I"C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers"  -I"C:\Users\TEMP\Documents\Arduino\libraries"  -I"C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire\utility"
+build.path=C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560
+build.project_name=node2
+build.variant.path=C:\Program Files (x86)\Arduino\hardware\arduino\avr\variants\mega
+build.core.path=C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino
+archive_file=core.a
+build.path_sketch=C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560
+build.path_core=C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560
+build.path_libraries=C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560
+object_file=C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\Wire\utility\twi.c.o
+source_file=C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire\utility\twi.c
+object_files="C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\node2.cpp.o" "C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\node2_can.cpp.o" "C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\node2_i2c.cpp.o" "C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\node2_ir.cpp.o" "C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\node2_mcp2515.cpp.o" "C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\node2_motorctrl.cpp.o" "C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\node2_servo.cpp.o" "C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\node2_spi.cpp.o" "C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\node2_test.cpp.o" "C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\Positioncontroller.cpp.o" "C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\Servo\avr\Servo.cpp.o" "C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\Servo\sam\Servo.cpp.o" "C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\Timer3\TimerThree.cpp.o" "C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\Wire\Wire.cpp.o" "C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atmega2560\Wire\utility\twi.c.o" 
 </arduino.board.property_bag>
         <arduino.build.mcu>atmega2560</arduino.build.mcu>
         <arduino.build.f_cpu>16000000L</arduino.build.f_cpu>

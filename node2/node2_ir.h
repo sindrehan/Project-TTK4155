@@ -11,10 +11,9 @@
 
 #include "Arduino.h"
 
-extern volatile int game_over;
-extern long game_time;
+extern uint32_t game_time;
 
-int ir_read();
-void int_timer();
+uint16_t ir_read();
+void gametime_counter();
 
 #endif /* NODE2_IR_H_ */

@@ -2,6 +2,7 @@ import time
 import os
 import sys
 import pygame
+import serial
 
 print_width = 32
 
@@ -14,6 +15,7 @@ pygame.init()
 pygame.joystick.init()
 joystick = pygame.joystick.Joystick(0)
 joystick.init()
+#ser = serial.Serial('/dev/ttyACM0', 9600)
 
 clear = lambda: os.system('clear')
 
@@ -24,6 +26,7 @@ def print_axis(axis):
     else:
         pos = int( values[axis]*-print_width)
         print "["+" "*(print_width-pos)+"#"+" "*pos+" "*(print_width-1)+"]" 
+
 try:
     values = [0]*23
     name = joystick.get_name()
@@ -61,7 +64,7 @@ try:
 
         #Sleep to prevent flickering
         time.sleep(0.05)
-
+        
 except KeyboardInterrupt:
     #CTRL+C exit
     print

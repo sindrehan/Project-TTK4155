@@ -8,43 +8,93 @@
 #include "joystick.h"
 #include "test.h"
 #include "oled_driver.h"
+#include "definations.h"
+
 
 
 int main(void)
 {	
-	
-	char* main_menu[] = {3, "Main Menu", "New game", "Options", "Back"};
-	char* new_game[] = {3, "New Game", "Single player", "Double player", "Back"};
-	char* single_player[] = {1, "I", "Single player", "Double player", "Back"};
 	int ubrr = (F_CPU/16/9600)-1;
 	UART_Init(ubrr);
 	
-	//can_init(MODE_NORMAL);
-	//JOY_init();
-	//OLED_init();	
-	test_oled_menu();
-	//can_message_t commands = (can_message_t){
-		//.id = 0x01,
-		//.length = 5,
-		//.data = {0, 0,	//Joystick positions
-				 //0, 0,	//Left and right button
-				 //0,		//Joystick button
-				//},
-	//};
-	//
-	//JOY_position_t pos;
-	//
-	//while(1){
-		//pos = JOY_getPosition();
-		//commands.data[0] = pos.x;
-		//commands.data[1] = pos.y;
-		//commands.data[2] = JOY_button(0);
-		//commands.data[3] = JOY_button(1);
-		//commands.data[4] = JOY_button(2);
-		//printf("JOy button: %d\n",commands.data[4]);
-		//can_transmit(commands);
-	//}
+	can_init(MODE_NORMAL);
+	JOY_init();
+	OLED_init();
+	menuitem* current_menu = menu_init();
 	
+	JOY_position_t pos;
+	
+	uint8_t settings[] = {	MAINMENU,  // Game mode
+						SPEEDCTRL, // Control type
+						MULTICARD  // Joystick type
+	};
+	
+	uint8_t time[] = { 0,0,0 };	
+		
+	uint8_t prev_dir = NEUTRAL;
+	
+	can_message_t msg_received;
+
+	can_message_t msg_commands = (can_message_t){
+		.id = 0x01,
+		.length = 7,
+		.data = {0,0,	//x, y joystick
+				 0,0,	//Left-, Right button
+				 0,		//Joystick button
+				 0,0,	//Left-, Right slider
+				 },
+	};
+	
+
+	
+	while(1){
+		msg_received = can_receive();
+		if (msg_received.id == 0x03){
+			time[0] = msg_received.data[0];
+			time[1] = msg_received.data[1];
+			time[2] = msg_received.data[2];
+		}
+		
+		
+		switch (settings[0]){
+			case MAINMENU:
+				menu_print(current_menu);
+				current_menu = menu_move(current_menu, &prev_dir, settings);
+				//printf("Setup: %d %d %d \n", settings[0], settings[1], settings[2]);
+				break;
+			case SINGLEPLAYERMENU:
+				print_singleplayer();
+				
+				break;
+			case DOUBLEPLAYERMENU:
+				//Stuff to print
+				break;
+		}
+		
+		if (settings[0] == SINGLEPLAYERMENU || settings[0] == DOUBLEPLAYERMENU){
+			switch (settings[2]) {
+				case DUALSHOCK3:
+				break;
+				case MULTICARD:
+				pos = JOY_getPosition();
+				msg_commands.data[0] = pos.x;
+				msg_commands.data[1] = pos.y;
+				msg_commands.data[2] = JOY_button(0);
+				msg_commands.data[3] = JOY_button(1);
+				msg_commands.data[4] = JOY_button(2);
+				msg_commands.data[5] = ADC_read(2);
+				msg_commands.data[6] = ADC_read(3);
+				can_transmit(msg_commands);				
+				break;
+			}
+		}
+		//switch 
+	}
+	
+	
+	
+
+
 	
 	
 }
