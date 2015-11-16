@@ -71,8 +71,6 @@
       <Value>C:/Program Files (x86)/Arduino/libraries</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/utility</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire</Value>
-      <Value>C:/Users/TEMP/Documents/Arduino/libraries/Timer3/utility</Value>
-      <Value>C:/Users/TEMP/Documents/Arduino/libraries/Timer3</Value>
       <Value>C:/Program Files (x86)/Arduino/libraries/Servo/src/utility</Value>
       <Value>C:/Program Files (x86)/Arduino/libraries/Servo/src</Value>
       <Value>../../node2</Value>
@@ -110,8 +108,6 @@
       <Value>C:/Program Files (x86)/Arduino/libraries</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/utility</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire</Value>
-      <Value>C:/Users/TEMP/Documents/Arduino/libraries/Timer3/utility</Value>
-      <Value>C:/Users/TEMP/Documents/Arduino/libraries/Timer3</Value>
       <Value>C:/Program Files (x86)/Arduino/libraries/Servo/src/utility</Value>
       <Value>C:/Program Files (x86)/Arduino/libraries/Servo/src</Value>
       <Value>../../node2</Value>
@@ -137,7 +133,7 @@
     <VMSETTING_IncludePaths>C:/Program Files (x86)/Arduino/hardware/arduino/avr/cores/arduino;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/mega;../../node2;C:/Program Files (x86)/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries;C:/Program Files (x86)/Visual Micro/Visual Micro for Arduino/Micro Platforms/default/debuggers;C:/Users/TEMP/Documents/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include/;C:/Program Files (x86)/Arduino/hardware/tools/avr//avr/include/avr/;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.8.1/include;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/yun;C:/Program Files (x86)/Visual Micro/Visual Micro for Arduino/Micro Platforms/default/debuggers/VM_DBG;C:/Program Files (x86)/Arduino/libraries/Servo/src;C:/Program Files (x86)/Arduino/libraries/Servo/src/utility;C:/Users/TEMP/Documents/Arduino/libraries/Timer3;C:/Users/TEMP/Documents/Arduino/libraries/Timer3/utility;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/utility;</VMSETTING_IncludePaths>
     <VisualMicroSettings>
       <VisualMicroSettings>
-        <arduino.upload.port>COM6</arduino.upload.port>
+        <arduino.upload.port>COM4</arduino.upload.port>
         <arduino.board.name>mega_atmega2560</arduino.board.name>
         <arduino.board.desc>Arduino Mega w/ ATmega2560 (Mega 2560)</arduino.board.desc>
         <arduino.board.property_bag>name=Arduino Mega w/ ATmega2560 (Mega 2560)
@@ -369,8 +365,6 @@ object_files="C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atme
       <Value>C:/Program Files (x86)/Arduino/libraries</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/utility</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire</Value>
-      <Value>C:/Users/TEMP/Documents/Arduino/libraries/Timer3/utility</Value>
-      <Value>C:/Users/TEMP/Documents/Arduino/libraries/Timer3</Value>
       <Value>C:/Program Files (x86)/Arduino/libraries/Servo/src/utility</Value>
       <Value>C:/Program Files (x86)/Arduino/libraries/Servo/src</Value>
       <Value>../../node2</Value>
@@ -408,8 +402,6 @@ object_files="C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atme
       <Value>C:/Program Files (x86)/Arduino/libraries</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/utility</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire</Value>
-      <Value>C:/Users/TEMP/Documents/Arduino/libraries/Timer3/utility</Value>
-      <Value>C:/Users/TEMP/Documents/Arduino/libraries/Timer3</Value>
       <Value>C:/Program Files (x86)/Arduino/libraries/Servo/src/utility</Value>
       <Value>C:/Program Files (x86)/Arduino/libraries/Servo/src</Value>
       <Value>../../node2</Value>
@@ -435,7 +427,7 @@ object_files="C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atme
     <VMSETTING_IncludePaths>C:/Program Files (x86)/Arduino/hardware/arduino/avr/cores/arduino;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/mega;../../node2;C:/Program Files (x86)/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries;C:/Program Files (x86)/Visual Micro/Visual Micro for Arduino/Micro Platforms/default/debuggers;C:/Users/TEMP/Documents/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include/;C:/Program Files (x86)/Arduino/hardware/tools/avr//avr/include/avr/;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.8.1/include;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/yun;C:/Program Files (x86)/Visual Micro/Visual Micro for Arduino/Micro Platforms/default/debuggers/VM_DBG;C:/Program Files (x86)/Arduino/libraries/Servo/src;C:/Program Files (x86)/Arduino/libraries/Servo/src/utility;C:/Users/TEMP/Documents/Arduino/libraries/Timer3;C:/Users/TEMP/Documents/Arduino/libraries/Timer3/utility;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/utility;</VMSETTING_IncludePaths>
     <VisualMicroSettings>
       <VisualMicroSettings>
-        <arduino.upload.port>COM6</arduino.upload.port>
+        <arduino.upload.port>COM4</arduino.upload.port>
         <arduino.board.name>mega_atmega2560</arduino.board.name>
         <arduino.board.desc>Arduino Mega w/ ATmega2560 (Mega 2560)</arduino.board.desc>
         <arduino.board.property_bag>name=Arduino Mega w/ ATmega2560 (Mega 2560)
@@ -636,21 +628,25 @@ object_files="C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atme
     </VisualMicroSettings>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="node2.ino">
-      <SubType>compile</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Visual Micro\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MCP2515.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="node2.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="node2_can.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="node2_can.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="node2_fsm.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="node2_fsm.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="node2_mcp2515.cpp">
@@ -686,6 +682,11 @@ object_files="C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atme
     <Compile Include="Visual Micro\.node2.vsarduino.h">
       <SubType>compile</SubType>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="node2.ino">
+      <SubType>compile</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>

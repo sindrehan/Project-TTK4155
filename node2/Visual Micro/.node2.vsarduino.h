@@ -29,8 +29,13 @@ static int uart_putchar (char c, FILE *stream);
 #include <MCP2515.h>
 #include <Positioncontroller.cpp>
 #include <Positioncontroller.h>
+#include <TimerThree.cpp>
+#include <TimerThree.h>
+#include <definitions.h>
 #include <node2_can.cpp>
 #include <node2_can.h>
+#include <node2_fsm.cpp>
+#include <node2_fsm.h>
 #include <node2_i2c.cpp>
 #include <node2_i2c.h>
 #include <node2_ir.cpp>

@@ -49,20 +49,21 @@ int main(void)
 
 	
 	while(1){
-		//can_message_t msg_received = can_receive();
-		//switch (msg_received.id){
-			//case 0x03: //Game time update
-				//for (uint8_t i = 0; i < 3; i++){
-					//time[i] = msg_received.data[i];
-				//}
-				//break;
-			//case 0x04: //State update
-				//menu_change_gamestate(settings, msg_received.data[0]);
-				//break;
-			//case 0x05: //Calibration status
-				//calibration_status = msg_received.data[0];
-				//break;
-		//}
+		can_message_t msg_received = can_receive();
+		switch (msg_received.id){
+			case 0x02: //State update
+				menu_change_gamestate(settings, msg_received.data[0]);
+				break;
+			case 0x03: //Game time update
+				for (uint8_t i = 0; i < 3; i++){
+					time[i] = msg_received.data[i];
+				}
+				break;
+
+			case 0x04: //Calibration status
+				calibration_status = msg_received.data[0];
+				break;
+		}
 		
 		switch (GAMESTATE){
 			case MAINMENU:
