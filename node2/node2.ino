@@ -33,6 +33,12 @@ can_message_t cal_status  = (can_message_t){
 	.data = { CAL_UNINITIATED,},
 };
 
+can_message_t msg_settings  = (can_message_t){
+	.id = 0x02,
+	.length = 3,
+	.data = { 0,0,0,},
+};
+
 static int uart_putchar (char c, FILE *stream){
 	Serial.write(c);
 	return 0;
@@ -61,77 +67,76 @@ void setup()
 	servo.attach(3, 900, 2100);
 	
 	motor_init();
-
 	pinMode(4, OUTPUT);
-	
-	motor_calibrate(&position);
 }
 
 void loop()
 {	
+	//position += motor_read();
+	//printf("Encoder : %d\n", position);
+	
 	can_message_t msg = can_receive();
 	switch (msg.id){
 		case 0x01:
-		for (uint8_t i = 0; i < msg.length; i++){
-			joystick[i] = msg.data[i];
-		}
+			for (uint8_t i = 0; i < msg.length; i++){
+				joystick[i] = msg.data[i];
+			}
 		break;
 		case 0x02:
-		for (uint8_t i = 0; i < msg.length; i++){
-			settings[i] = msg.data[i];
-		}
+			for (uint8_t i = 0; i < msg.length; i++){
+				if (settings[i] != msg.data[i]){
+					settings[i] = msg.data[i];
+				}
+				
+			}
 		break;
 	}
-	
+	can_printmsg(msg);
 	if (JOYSTICKTYPE == DUALSHOCK3){
 		//Place dualshock values in joystick array
 	}
 	switch (GAMESTATE) {
 		case MAINMENU:
+			//printf(Everything is handled at node 1)
 			break;
 		case CALIBRATE:
-			cal_status.data[0] = CAL_INITIATED;
-			can_transmit(cal_status);
-			motor_calibrate(&position);
-			cal_status.data[0] = CAL_FINISHED;
-			GAMESTATE = PREGAME;
+			printf("I'm here!\n");
+			//if (cal_status.data[0] == CAL_UNINITIATED){
+				cal_status.data[0] = CAL_INITIATED;	
+				can_transmit(cal_status);
+				motor_calibrate(&position);
+				cal_status.data[0] = CAL_FINISHED;
+				can_transmit(cal_status);
+				GAMESTATE = PREGAME;
+			//}
 		case PREGAME:
-			if(!settings[2]){
-				//Oled msg: press to start
-				//PS3 control
-				} else{
-				if (!joystick[4]){
-					//OLED msg: pres to start
-					GAMESTATE = INGAME;
-				}
-			}
+			//Everything is handled at node 1
 			break;
 		case INGAME:
 			Timer3.attachInterrupt(gametime_counter);
 			//Convert from  X = ? 100 % to 0 - 180 degrees
 			servo.write((int) (( ((float)(-1)*joystick[0]) / 100)*90)+90);
-			switch (settings[1]) {
+			switch (CTRLTYPE) {
 				case SPEEDCTRL:
-				if (joystick[1] > 0){
-					motor_write(joystick[1]*128/100, 1);
-				}
-				else{
-					motor_write(-1*joystick[1]*128/100, 0);
-				}
-				break;
+					if (joystick[1] > 0){
+						motor_write(joystick[1]*128/100, 1);
+					}
+					else{
+						motor_write(-1*joystick[1]*128/100, 0);
+					}
+					break;
 				case POSCTRL:
-				desired_position = (uint8_t) -joystick[6];
-				desired_position *= 9000/255;
-				position += motor_read();
-				integration_error += (desired_position - position);
-			
-				if (((desired_position - position)/40 + integration_error/6000) > 0){
-					motor_write((desired_position - position)/40 + integration_error/6000, 0);
-				}
-				else{
-					motor_write( ( position - desired_position)/40 + integration_error/6000, 1);
-				}
-				break;
+					desired_position = (uint8_t) -joystick[6];
+					desired_position *= 9000/255;
+					position += motor_read();
+					integration_error += desired_position - position;
+					if ((((desired_position - position)/40) + integration_error/1000) > 0){
+						motor_write((((desired_position - position)/40) + integration_error/1000), 0);
+					}
+					else{
+						motor_write(-(((desired_position - position)/40) + integration_error/1000), 1);
+					}
+					break;
 			}
 			if (!joystick[4]){
 				digitalWrite(SOLENOIDPIN, LOW);
@@ -140,9 +145,14 @@ void loop()
 			}
 			if (ir_read() < IRLIMIT){
 				Timer3.detachInterrupt();
-			
 				GAMESTATE = POSTGAME;
-				} else {
+				for (uint8_t i = 0; i < msg_settings.length; i++){
+					msg_settings.data[i] = settings[i];
+				}
+				can_transmit(msg_settings);
+				
+			} 
+			else {
 				time.data[0] = game_time/6000;
 				time.data[1] = (game_time/100) % 60;
 				time.data[2] = game_time % 100;
@@ -150,44 +160,11 @@ void loop()
 			}
 			break;
 		case POSTGAME:
-			//OLED msg: Game ended.
+			motor_write(0,0);
+			game_time = 0;			
 			break;
 	}
+	//printf("IR: %d\n", ir_read());
+	//printf("Encoder: %d\n", motor_read());
 	
-	//can_printmsg(msg);
 }
-
-
-
-
-//if (game_over){
-////Use the informed variable to avoid printing multiple times
-//if (ir_read() < IRLIMIT && !informed){
-//printf("Remove ball before resetting!\n");
-//informed = 1;
-//}
-//else if(ir_read() > IRLIMIT && informed){
-//printf("Resetting: %d\n", msg.data[3]);
-//game_over = 0;
-//informed = 0;
-//}
-//else if(ir_read() > IRLIMIT){
-//printf("Resetting: %d\n", msg.data[3]);
-//game_over = 0;
-//}
-//}
-//
-//if (!(game_over) && (ir_read() < IRLIMIT)){
-//game_over = 1;
-//printf("Game time: %d.%d%ds\n", game_time/100, game_time%10, game_time%1 );
-//game_time = 0;
-//} else {
-//
-//}
-//can_transmit(time);
-
-
-//printf("Positon: %d\n", position);
-
-//printf("Encoder: %d\n", motor_read());
-//printf("IR: %d\n", ir_read());

@@ -27,11 +27,6 @@ static int uart_putchar (char c, FILE *stream);
 #include "C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\arduino.h"
 #include <node2.ino>
 #include <MCP2515.h>
-#include <Positioncontroller.cpp>
-#include <Positioncontroller.h>
-#include <TimerThree.cpp>
-#include <TimerThree.h>
-#include <definitions.h>
 #include <node2_can.cpp>
 #include <node2_can.h>
 #include <node2_fsm.cpp>

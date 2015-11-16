@@ -63,16 +63,23 @@ void motor_reset_encoder (){
 }
 
 void motor_calibrate(int16_t* pos){
+	*pos = 0;
+	motor_reset_encoder();
+	printf("Motor_calibrate()\n");
 	motor_write(85, 1);
-	_delay_ms(10);
+	_delay_ms(100);
 	while (motor_read()<0){
-		//printf("Motor: %d\n", motor_read());
+		_delay_ms(10);
 	}
 	motor_write(0, 0);
 	motor_reset_encoder();
-	while(*pos < 4500){
+	printf("Now im here!");
+	while(*pos < 4300){
 		motor_write(85, 0);
 		*pos += motor_read();
+		printf("studc\n");
 	}
+	motor_write(0, 0);
+	
 }
 

@@ -58,15 +58,16 @@ menuitem* menu_new(char* name, uint8_t numSubmenus, void fn(uint8_t, uint8_t *))
 
 void menu_new_game(uint8_t choice, uint8_t *setup){
 	menu_change_gamestate(setup, CALIBRATE);
-	//can_message_t msg_setup = (can_message_t){
-		//.id = 0x02,
-		//.length = 3,
-		//.data = {	setup[0],  //Players
-					//setup[1],	//Control type
-					//setup[2],	//Controller
-		//},
-	//};
-	//can_transmit(msg_setup);
+	printf("en gang");
+	can_message_t msg_setup = (can_message_t){
+		.id = 0x02,
+		.length = 3,
+		.data = {	setup[0],  //Game state
+					setup[1],	//Control type
+					setup[2],	//Controller
+		},
+	};
+	can_transmit(msg_setup);
 }
 
 void menu_control_select(uint8_t choice, uint8_t *setup){
@@ -206,10 +207,6 @@ void menu_print_ingame(uint8_t *time)
 	char str[20];
 	sprintf(str, "Time: %02d:%02d:%02d\n", time[0], time[1], time[2]);
 	OLED_print_string(str);
-	OLED_pos(6,0);
-	OLED_print_string("Press reset to return to\n");
-	OLED_pos(7,0);
-	OLED_print_string("main menu\n");
 }
 
 void menu_print_postgame(uint8_t *time){

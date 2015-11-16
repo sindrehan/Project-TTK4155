@@ -51,14 +51,17 @@ can_message_t can_receive(){
 
 
 void can_printmsg(can_message_t m){
-	printf("(can_msg_t){id:%x, len:%d, data:{",
-		m.id, m.length
-		);
-		if(m.length){
-			printf("%d", m.data[0]);
-		}
-		for(uint8_t i = 1; i < m.length; i++){
-			printf(", %d", m.data[i]);
-		}
-	printf("}\n");
+	if (m.id != 0){
+		printf("(can_msg_t){id:%x, len:%d, data:{",
+			m.id, m.length
+			);
+			if(m.length){
+				printf("%d", m.data[0]);
+			}
+			for(uint8_t i = 1; i < m.length; i++){
+				printf(", %d", m.data[i]);
+			}
+		printf("}\n");	
+	}
+
 }

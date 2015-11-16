@@ -34,7 +34,7 @@ int main(void)
 		
 	uint8_t prev_dir = NEUTRAL;
 	
-	uint8_t calibration_status = CAL_FINISHED;
+	uint8_t calibration_status = CAL_UNINITIATED;
 
 	can_message_t msg_commands = (can_message_t){
 		.id = 0x01,
@@ -53,6 +53,7 @@ int main(void)
 		switch (msg_received.id){
 			case 0x02: //State update
 				menu_change_gamestate(settings, msg_received.data[0]);
+				printf("Msg received: %d\n", msg_received.data[0]);
 				break;
 			case 0x03: //Game time update
 				for (uint8_t i = 0; i < 3; i++){
@@ -84,37 +85,31 @@ int main(void)
 				break;
 			case INGAME:
 				menu_print_ingame(time);
-				if (JOY_button(1)){ //Reset
-					menu_change_gamestate(settings, MAINMENU);
-					current_menu = main_menu;
-				}
-				
-				if (!JOY_button(2)){ //-> Brudd på IR-stråle
-					menu_change_gamestate(settings, POSTGAME);
-				}
 				if (JOYSTICKTYPE == MULTICARD){
-					//pos = JOY_getPosition();
-					//msg_commands.data[0] = pos.x;
-					//msg_commands.data[1] = pos.y;
-					//msg_commands.data[2] = JOY_button(0);
-					//msg_commands.data[3] = JOY_button(1);
-					//msg_commands.data[4] = JOY_button(2);
-					//msg_commands.data[5] = ADC_read(2);
-					//msg_commands.data[6] = ADC_read(3);
-					//can_transmit(msg_commands);
+					pos = JOY_getPosition();
+					msg_commands.data[0] = pos.x;
+					msg_commands.data[1] = pos.y;
+					msg_commands.data[2] = JOY_button(0);
+					msg_commands.data[3] = JOY_button(1);
+					msg_commands.data[4] = JOY_button(2);
+					msg_commands.data[5] = ADC_read(2);
+					msg_commands.data[6] = ADC_read(3);
+					can_transmit(msg_commands);
 				}
 				break;
 			case POSTGAME:
 				menu_print_postgame(time);
-				for (uint8_t i = 0; i<3; i++){
-					time[i] = 0;
-				}
-				if (JOY_button(1)){
+				if (JOY_button(0)){
 					menu_change_gamestate(settings, PREGAME);
 				}
 				if (Joy_getDirection() == LEFT){
 					menu_change_gamestate(settings, MAINMENU);
 					current_menu = main_menu;
+				}
+				if (GAMESTATE != POSTGAME){
+					for (uint8_t i = 0; i<3; i++){
+						time[i] = 0;
+					}
 				}
 				break;
 		}
@@ -125,11 +120,8 @@ int main(void)
 
 /* TODO
  - Flytt "menu_change_state()" til en egen fil for tilstandsmaskinfunksjoner
- - Sett opp arduino til å trigge tilstandsendringer
- - La calibrate funksjonen sende CAN-melding med calibration-status
+
 Nødvending:
-	 2.5 Lag en god og fin meny (På OLED)
-	 3 Flytt OLED til SRAM
 	 4 Rydd opp minibreadboard
 	 5 Typesetting ( char -> uint8 )
 	 6 Navngiving
