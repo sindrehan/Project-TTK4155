@@ -56,18 +56,17 @@ menuitem* menu_new(char* name, uint8_t numSubmenus, void fn(uint8_t, uint8_t *))
 	return m;
 }
 
-void menu_player_select(uint8_t choice, uint8_t *setup){
-	setup[0] = choice+1;
-	can_message_t msg_setup = (can_message_t){
-		.id = 0x02,
-		.length = 3,
-		.data = {	setup[0],  //Players
-					setup[1],	//Control type
-					setup[2],	//Controller
-		},
-	};
-	can_transmit(msg_setup);
-	OLED_reset();
+void menu_new_game(uint8_t choice, uint8_t *setup){
+	menu_change_gamestate(setup, CALIBRATE);
+	//can_message_t msg_setup = (can_message_t){
+		//.id = 0x02,
+		//.length = 3,
+		//.data = {	setup[0],  //Players
+					//setup[1],	//Control type
+					//setup[2],	//Controller
+		//},
+	//};
+	//can_transmit(msg_setup);
 }
 
 void menu_control_select(uint8_t choice, uint8_t *setup){
@@ -81,10 +80,7 @@ void menu_joystick_select(uint8_t choice, uint8_t *setup){
 menuitem* menu_init(){
 
 	menuitem* main_menu = menu_new("Main menu", 2, NULL);
-		main_menu->submenus.entries[0] = menu_new("New game", 2, NULL);
-			main_menu->submenus.entries[0]->submenus.entries[0] = menu_new("Single player", 0, &menu_player_select); 
-			main_menu->submenus.entries[0]->submenus.entries[1] = menu_new("Double player", 0, &menu_player_select); 
-
+		main_menu->submenus.entries[0] = menu_new("New game", 0, &menu_new_game);
 		main_menu->submenus.entries[1] = menu_new("Options", 2, NULL);
 			main_menu->submenus.entries[1]->submenus.entries[0] = menu_new("Joystick type", 2, NULL);
 				main_menu->submenus.entries[1]->submenus.entries[0]->submenus.entries[0] = menu_new("Dualshock3", 0, &menu_joystick_select);
@@ -110,7 +106,7 @@ void menu_assign_parents_stdArrow(menuitem* m){
 }
 
 
-void menu_print(menuitem* m)
+void menu_print_mainmenu(menuitem* m)
 {
 	OLED_pos(0,0);
 	OLED_print_string(m->name);
@@ -128,7 +124,7 @@ void menu_print(menuitem* m)
 	}
 }
 
-menuitem* menu_move(menuitem* m, uint8_t* prev_dir, uint8_t *setup)
+menuitem* menu_move(menuitem* m, uint8_t* prev_dir, uint8_t *settings)
 {	
 	switch(Joy_getDirection()){
 		case UP:
@@ -148,7 +144,7 @@ menuitem* menu_move(menuitem* m, uint8_t* prev_dir, uint8_t *setup)
 		case RIGHT:
 			if (*prev_dir == NEUTRAL){
 				*prev_dir = RIGHT;
-				return menu_right(m, setup);
+				return menu_right(m, settings);
 			}
 			break;
 		case LEFT:
@@ -166,7 +162,43 @@ menuitem* menu_move(menuitem* m, uint8_t* prev_dir, uint8_t *setup)
 }
 
 
-void menu_print_singleplayer(uint8_t *time)
+void menu_print_calibrate(uint8_t cal_status){
+	OLED_pos(0,0);
+	OLED_print_string("Starting calibration\n");
+	if (cal_status == CAL_INITIATED || cal_status == CAL_FINISHED){
+		OLED_pos(1,0);
+		OLED_print_string("Calibrating");
+		_delay_ms(200);
+		for (uint8_t i = 0; i < 3; i++){
+			OLED_print_string(".");
+			_delay_ms(200);
+		}
+	}
+	if (cal_status == CAL_FINISHED){
+		OLED_pos(2,0);
+		OLED_print_string("Calibration complete!\n");
+		_delay_ms(1000);
+	}
+	OLED_reset();
+	
+}
+
+void menu_print_pregame(){
+	OLED_pos(0,0);
+	OLED_print_string("Instructions:\n");
+	OLED_pos(1, 0);
+	OLED_print_string("The goal is to keep the ball");
+	OLED_pos(2, 0);
+	OLED_print_string("away from the back wall for as");
+	OLED_pos(3, 0);
+	OLED_print_string("long as possible.");
+	OLED_pos(6, 0);
+	OLED_print_string("Ready the ball, and press start");
+	OLED_pos(7, 0);
+	OLED_print_string("to begin.");
+}
+
+void menu_print_ingame(uint8_t *time)
 {
 	OLED_pos(0,0);
 	OLED_print_string("Single player\n");
@@ -174,8 +206,27 @@ void menu_print_singleplayer(uint8_t *time)
 	char str[20];
 	sprintf(str, "Time: %02d:%02d:%02d\n", time[0], time[1], time[2]);
 	OLED_print_string(str);
-	
-	
-
+	OLED_pos(6,0);
+	OLED_print_string("Press reset to return to\n");
+	OLED_pos(7,0);
+	OLED_print_string("main menu\n");
 }
 
+void menu_print_postgame(uint8_t *time){
+	OLED_pos(0,0);
+	OLED_print_string("Game over!\n");
+	OLED_pos(1,0);
+	char str[30];
+	sprintf(str, "Your time: %02d:%02d:%02d\n", time[0], time[1], time[2]);
+	OLED_print_string(str);
+	OLED_pos(6,0);
+	OLED_print_string("Press reset to try again\n");
+	OLED_pos(7,0);
+	OLED_print_string("or left to return to main\n");
+		
+}
+
+void menu_change_gamestate(uint8_t *settings, uint8_t state){
+	GAMESTATE = state;
+	OLED_reset();
+}

@@ -23,7 +23,8 @@ void JOY_calibrate(){
 	JOY_y_init_pos = ADC_read(1);
 }
 
-bool JOY_button(int button){ //0: LEFT, 1: RIGHT, 2: Joystick
+uint8_t JOY_button(uint8_t button)
+{ //0: LEFT, 1: RIGHT, 2: Joystick
 	switch(button){
 		case 0:
 			return !(!(PINB & (1<<PINB0)));
@@ -32,7 +33,7 @@ bool JOY_button(int button){ //0: LEFT, 1: RIGHT, 2: Joystick
 		case 2:
 			return !(!(PINB & (1<<PINB2)));
 		default:
-			return false;
+			return 0;
 	}
 }
 

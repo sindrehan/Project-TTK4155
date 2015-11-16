@@ -10,7 +10,6 @@
 #define JOYSTICK_H_
 
 #include <avr/io.h>
-#include <stdbool.h>
 
 typedef enum {
 	LEFT,
@@ -28,7 +27,7 @@ typedef struct {
 
 void JOY_init();
 void JOY_calibrate();
-bool JOY_button(int button);
+uint8_t JOY_button(uint8_t button);
 JOY_position_t JOY_getPosition();
 JOY_direction_t Joy_getDirection();
 

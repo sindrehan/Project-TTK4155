@@ -1,10 +1,3 @@
-/*
- * adc_driver.c
- *
- * Created: 09.09.2015 16:20:45
- *  Author: sindrhan
- */ 
-
 
 
 #include "adc_driver.h"

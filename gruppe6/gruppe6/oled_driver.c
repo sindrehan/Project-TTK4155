@@ -103,7 +103,7 @@ void OLED_clear_rest_of_line(){
 
 void OLED_print(char character){
 	if (character == '\n'){
-		OLED_clear_rest_of_line();	
+		OLED_clear_rest_of_line();
 	}
 	else{
 		for (int i = 0; i < char_width; i++){

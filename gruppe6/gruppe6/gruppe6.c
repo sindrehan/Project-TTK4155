@@ -12,14 +12,16 @@
 
 
 
+
 int main(void)
 {	
-	int ubrr = (F_CPU/16/9600)-1;
+	uint16_t ubrr = (F_CPU/16/BAUDRATE)-1;
 	UART_Init(ubrr);
 	can_init(MODE_NORMAL);
 	JOY_init();
 	OLED_init();
-	menuitem* current_menu = menu_init();
+	menuitem* main_menu = menu_init();
+	menuitem* current_menu = main_menu;
 	
 	JOY_position_t pos;
 	
@@ -31,6 +33,8 @@ int main(void)
 	uint8_t time[] = { 0,0,0 };	
 		
 	uint8_t prev_dir = NEUTRAL;
+	
+	uint8_t calibration_status = CAL_FINISHED;
 
 	can_message_t msg_commands = (can_message_t){
 		.id = 0x01,
@@ -45,87 +49,84 @@ int main(void)
 
 	
 	while(1){
-		can_message_t msg_received = can_receive();
-		switch (msg_received.id){
-			case 0x03:
-				for (uint8_t i = 0; i < 3; i++){
-					time[i] = msg_received[i];
-				}
-				break;
-			case 0x04:
-				break;
-		}
+		//can_message_t msg_received = can_receive();
+		//switch (msg_received.id){
+			//case 0x03: //Game time update
+				//for (uint8_t i = 0; i < 3; i++){
+					//time[i] = msg_received.data[i];
+				//}
+				//break;
+			//case 0x04: //State update
+				//menu_change_gamestate(settings, msg_received.data[0]);
+				//break;
+			//case 0x05: //Calibration status
+				//calibration_status = msg_received.data[0];
+				//break;
+		//}
 		
-		switch (settings[0]){
+		switch (GAMESTATE){
 			case MAINMENU:
-				menu_print(current_menu);
+				menu_print_mainmenu(current_menu);
 				current_menu = menu_move(current_menu, &prev_dir, settings);
-				//printf("Setup: %d %d %d \n", settings[0], settings[1], settings[2]);
 				break;
-			case SINGLEPLAYERMENU:
-				menu_print_singleplayer(time);
-				if (JOY_button(0)){
-					settings[0] = MAINMENU;
+			case CALIBRATE:
+				menu_print_calibrate(calibration_status);
+				if (calibration_status == CAL_FINISHED){
+					menu_change_gamestate(settings, PREGAME);
 				}
-				if (time[0] < 60){
-					if (time[1] < 60){
-						if (time[2] < 100){
-							time[2]++;
-							} else {
-							time[2] = 0;
-							time[1]++;
-						}
-						} else{
-						time[1] = 0;
-						time[0]++;
-					}
-					} else {
-					time[0] = 0;
-					time[1] = 0;
-					time[2] = 0;
-				}
-				_delay_ms(5);
 				break;
-			case DOUBLEPLAYERMENU:
-				//Stuff to print
+			case PREGAME:
+				menu_print_pregame();
+				if (JOY_button(0)){ //Start
+					menu_change_gamestate(settings, INGAME);
+				}
+				break;
+			case INGAME:
+				menu_print_ingame(time);
+				if (JOY_button(1)){ //Reset
+					menu_change_gamestate(settings, MAINMENU);
+					current_menu = main_menu;
+				}
+				
+				if (!JOY_button(2)){ //-> Brudd på IR-stråle
+					menu_change_gamestate(settings, POSTGAME);
+				}
+				if (JOYSTICKTYPE == MULTICARD){
+					//pos = JOY_getPosition();
+					//msg_commands.data[0] = pos.x;
+					//msg_commands.data[1] = pos.y;
+					//msg_commands.data[2] = JOY_button(0);
+					//msg_commands.data[3] = JOY_button(1);
+					//msg_commands.data[4] = JOY_button(2);
+					//msg_commands.data[5] = ADC_read(2);
+					//msg_commands.data[6] = ADC_read(3);
+					//can_transmit(msg_commands);
+				}
+				break;
+			case POSTGAME:
+				menu_print_postgame(time);
+				for (uint8_t i = 0; i<3; i++){
+					time[i] = 0;
+				}
+				if (JOY_button(1)){
+					menu_change_gamestate(settings, PREGAME);
+				}
+				if (Joy_getDirection() == LEFT){
+					menu_change_gamestate(settings, MAINMENU);
+					current_menu = main_menu;
+				}
 				break;
 		}
-		
-
-		if (settings[0] == SINGLEPLAYERMENU || settings[0] == DOUBLEPLAYERMENU){
-			switch (settings[2]) {
-				case DUALSHOCK3:
-				break;
-				case MULTICARD:
-				pos = JOY_getPosition();
-				msg_commands.data[0] = pos.x;
-				msg_commands.data[1] = pos.y;
-				msg_commands.data[2] = JOY_button(0);
-				msg_commands.data[3] = JOY_button(1);
-				msg_commands.data[4] = JOY_button(2);
-				msg_commands.data[5] = ADC_read(2);
-				msg_commands.data[6] = ADC_read(3);
-				can_transmit(msg_commands);
-				break;
-			}
-		}
-		//switch 
 	}
-	
-	
-	
-
-
-	
-	
 }
 
 
 
 /* TODO
+ - Flytt "menu_change_state()" til en egen fil for tilstandsmaskinfunksjoner
+ - Sett opp arduino til å trigge tilstandsendringer
+ - La calibrate funksjonen sende CAN-melding med calibration-status
 Nødvending:
-	 1 Skriv om til å bare sende én can-melding fra node 1.
-	 2 Posisjonskontroller
 	 2.5 Lag en god og fin meny (På OLED)
 	 3 Flytt OLED til SRAM
 	 4 Rydd opp minibreadboard
@@ -137,9 +138,7 @@ Nødvending:
 Eventuelt: 
 	 1 Dokumentasjon (Kommentarer, UML?)
 	 2 Gå over breadboard, fiks farger osv.
-	 3 Fiks DSUB9
 	 4 Interrupt-based uart
-	 5 OLED printf
 	 6 Optional advanced: Create drawing functions like oled_line(x0,y0,x1,y1), oled_circle(x,y,r)
 	 etc.
 	 7 Send OLED over CAN
@@ -150,3 +149,24 @@ Finn ut:
 	 - Timere?
 
 */
+
+
+	//
+	//if (time[0] < 60){
+	//if (time[1] < 60){
+	//if (time[2] < 100){
+	//time[2]++;
+	//} else {
+	//time[2] = 0;
+	//time[1]++;
+	//}
+	//} else{
+	//time[1] = 0;
+	//time[0]++;
+	//}
+	//} else {
+	//time[0] = 0;
+	//time[1] = 0;
+	//time[2] = 0;
+	//}
+	//_delay_ms(5);

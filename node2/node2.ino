@@ -1,4 +1,6 @@
 
+#define DEFINITIONS "../../../Desktop/Project-TTK4155/gruppe6/gruppe6/definitions.h"
+
 #include <stdio.h>
 #include <Arduino.h>
 #include "TimerThree.h"
@@ -12,16 +14,7 @@
 #include "node2_servo.h"
 #include "node2_ir.h"
 #include "node2_motorctrl.h"
-
-#define IRLIMIT 50
-#define SPEEDCTRL 0
-#define POSCTRL 1
-#define SOLENOIDPIN 4
-#define MENU 0
-#define PREGAME 1
-#define INGAME 2
-#define POSTGAME 3
-#define CALIBRATE 4
+#include DEFINITIONS
 
 uint32_t game_time = 0;
 
@@ -47,7 +40,7 @@ int16_t desired_position = 0;
 uint8_t mode = 0;
 int16_t integration_error = 0;
 
-uint8_t state = MENU;
+uint8_t state = MAINMENU;
 
 uint8_t settings[] = { 0,0,0 };
 int8_t joystick[] = { 0,0,0,0,0,0,0};
@@ -90,7 +83,7 @@ void loop()
 		//Place dualshock values in joystick array
 	}
 	switch (state) {
-		case MENU:
+		case MAINMENU:
 			
 			if(settings[0]){
 				state = CALIBRATE;

@@ -2,11 +2,14 @@
 #ifndef MENU_H_
 #define MENU_H_
 
+#include <util/delay.h>
+#include <string.h>
+#include <stdlib.h>
+
 #include "oled_driver.h"
 #include "can.h"
 #include "definitions.h"
-#include <string.h>
-#include <stdlib.h>
+
 
 
 //void menu_print(int arrow_pos, char* menu_items[]);
@@ -31,14 +34,18 @@ void menu_down(menuitem* m);
 menuitem* menu_new(char* name, uint8_t numSubmenus, void fn(uint8_t, uint8_t *));
 menuitem* menu_init();
 void menu_assign_parents_stdArrow(menuitem* base);
-void menu_print(menuitem* m);
-menuitem* menu_move(menuitem* m, uint8_t* prev_dir, uint8_t *setup);
+void menu_print_mainmenu(menuitem* m);
+menuitem* menu_move(menuitem* m, uint8_t* prev_dir, uint8_t *settings);
 
-void menu_player_select(uint8_t choice, uint8_t *setup);
+void menu_new_game(uint8_t choice, uint8_t *setup);
 void menu_control_select(uint8_t choice, uint8_t *setup);
 void menu_joystick_select(uint8_t choice, uint8_t *setup);
 
-void menu_print_singleplayer(uint8_t *time);
+void menu_print_ingame(uint8_t *time);
+void menu_print_calibrate(uint8_t cal_status);
+void menu_change_gamestate(uint8_t *settings, uint8_t state);
+void menu_print_pregame();
+void menu_print_postgame(uint8_t *time);
 
 
 #endif /* MENU_H_ */
