@@ -57,8 +57,7 @@ menuitem* menu_new(char* name, uint8_t numSubmenus, void fn(uint8_t, uint8_t *))
 }
 
 void menu_new_game(uint8_t choice, uint8_t *setup){
-	menu_change_gamestate(setup, CALIBRATE);
-	printf("en gang");
+	printf("en gang\n");
 	can_message_t msg_setup = (can_message_t){
 		.id = 0x02,
 		.length = 3,
@@ -68,6 +67,7 @@ void menu_new_game(uint8_t choice, uint8_t *setup){
 		},
 	};
 	can_transmit(msg_setup);
+	menu_change_gamestate(setup, CALIBRATE);
 }
 
 void menu_control_select(uint8_t choice, uint8_t *setup){
@@ -194,9 +194,9 @@ void menu_print_pregame(){
 	OLED_pos(3, 0);
 	OLED_print_string("long as possible.");
 	OLED_pos(6, 0);
-	OLED_print_string("Ready the ball, and press start");
+	OLED_print_string("Ready the ball, and press");
 	OLED_pos(7, 0);
-	OLED_print_string("to begin.");
+	OLED_print_string("trigger to begin.");
 }
 
 void menu_print_ingame(uint8_t *time)
@@ -223,16 +223,3 @@ void menu_print_postgame(uint8_t *time){
 		
 }
 
-void menu_change_gamestate(uint8_t *settings, uint8_t state){
-	GAMESTATE = state;
-	OLED_reset();
-	can_message_t msg_settings = (can_message_t){
-		.id = 0x02,
-		.length = 3,
-		.data = {	settings[0],    //Game state
-					settings[1],	//Control type
-					settings[2],	//Controller
-		},
-	};
-	can_transmit(msg_settings);
-}

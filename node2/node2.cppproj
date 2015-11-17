@@ -639,6 +639,12 @@ object_files="C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atme
     <Folder Include="Visual Micro\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="fsm.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="fsm.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="MCP2515.h">
       <SubType>compile</SubType>
     </Compile>
@@ -646,12 +652,6 @@ object_files="C:\Users\TEMP\AppData\Local\V.Micro\Arduino\Builds\node2\mega_atme
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="node2_can.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="node2_fsm.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="node2_fsm.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="node2_mcp2515.cpp">

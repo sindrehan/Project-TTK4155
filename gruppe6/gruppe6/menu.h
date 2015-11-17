@@ -9,11 +9,7 @@
 #include "oled_driver.h"
 #include "can.h"
 #include "definitions.h"
-
-
-
-//void menu_print(int arrow_pos, char* menu_items[]);
-//int menu_move_selector(char* menu[]);
+#include "fsm.h"
 
 typedef struct menuitem {
 	char* name;
@@ -43,7 +39,7 @@ void menu_joystick_select(uint8_t choice, uint8_t *setup);
 
 void menu_print_ingame(uint8_t *time);
 void menu_print_calibrate(uint8_t cal_status);
-void menu_change_gamestate(uint8_t *settings, uint8_t state);
+
 void menu_print_pregame();
 void menu_print_postgame(uint8_t *time);
 

@@ -9,6 +9,7 @@
 #include "test.h"
 #include "oled_driver.h"
 #include "definitions.h"
+#include "fsm.h"
 
 
 
@@ -79,7 +80,7 @@ int main(void)
 				break;
 			case PREGAME:
 				menu_print_pregame();
-				if (JOY_button(0)){ //Start
+				if (!JOY_button(2)){ //Start
 					menu_change_gamestate(settings, INGAME);
 				}
 				break;
@@ -142,24 +143,3 @@ Finn ut:
 	 - Timere?
 
 */
-
-
-	//
-	//if (time[0] < 60){
-	//if (time[1] < 60){
-	//if (time[2] < 100){
-	//time[2]++;
-	//} else {
-	//time[2] = 0;
-	//time[1]++;
-	//}
-	//} else{
-	//time[1] = 0;
-	//time[0]++;
-	//}
-	//} else {
-	//time[0] = 0;
-	//time[1] = 0;
-	//time[2] = 0;
-	//}
-	//_delay_ms(5);

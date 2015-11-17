@@ -37,4 +37,8 @@
 #define IRLIMIT 50
 #define SOLENOIDPIN 4
 
+//Regulator konstants
+#define K_I 1/700
+#define K_P 1/30
+
 #endif /* DEFINATIONS_H_ */

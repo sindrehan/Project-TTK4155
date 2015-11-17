@@ -65,7 +65,6 @@ void motor_reset_encoder (){
 void motor_calibrate(int16_t* pos){
 	*pos = 0;
 	motor_reset_encoder();
-	printf("Motor_calibrate()\n");
 	motor_write(85, 1);
 	_delay_ms(100);
 	while (motor_read()<0){
@@ -73,13 +72,28 @@ void motor_calibrate(int16_t* pos){
 	}
 	motor_write(0, 0);
 	motor_reset_encoder();
-	printf("Now im here!");
 	while(*pos < 4300){
 		motor_write(85, 0);
 		*pos += motor_read();
-		printf("studc\n");
 	}
 	motor_write(0, 0);
 	
 }
 
+void pi_controller(uint8_t joy_value, int16_t *position, int16_t *integration){
+	int16_t desired_position = joy_value;
+	printf("Des.pos: %d\n", desired_position);
+	desired_position *= 9000/255;
+	*position += motor_read();
+	*integration += (desired_position - *position);
+	printf("Joy value: %d\n", joy_value);
+	printf("Desired Position: %d\n", desired_position);
+	printf("Integration error: %d\n", *integration);
+	printf("Position: %d\n\n", *position);
+	if((desired_position-*position)*K_P + *integration*K_I){
+		motor_write(((desired_position -*position)*K_P + *integration*K_I), 0);
+	}
+	else{
+		motor_write(-((desired_position - *position)*K_P + *integration*K_I), 1);
+	}
+}

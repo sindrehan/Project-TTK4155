@@ -27,10 +27,10 @@ static int uart_putchar (char c, FILE *stream);
 #include "C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino\arduino.h"
 #include <node2.ino>
 #include <MCP2515.h>
+#include <fsm.cpp>
+#include <fsm.h>
 #include <node2_can.cpp>
 #include <node2_can.h>
-#include <node2_fsm.cpp>
-#include <node2_fsm.h>
 #include <node2_i2c.cpp>
 #include <node2_i2c.h>
 #include <node2_ir.cpp>

@@ -1,3 +1,4 @@
+#include "fsm.h"
 
 #include <stdio.h>
 #include <Arduino.h>
@@ -13,7 +14,7 @@
 #include "node2_servo.h"
 #include "node2_ir.h"
 #include "node2_motorctrl.h"
-#include "node2_fsm.h"
+#include "fsm.h"
 
 
 uint32_t game_time = 0;
@@ -91,24 +92,21 @@ void loop()
 			}
 		break;
 	}
-	can_printmsg(msg);
+	//can_printmsg(msg);
 	if (JOYSTICKTYPE == DUALSHOCK3){
 		//Place dualshock values in joystick array
 	}
 	switch (GAMESTATE) {
 		case MAINMENU:
-			//printf(Everything is handled at node 1)
+			//Everything is handled at node 1
 			break;
 		case CALIBRATE:
-			printf("I'm here!\n");
-			//if (cal_status.data[0] == CAL_UNINITIATED){
-				cal_status.data[0] = CAL_INITIATED;	
-				can_transmit(cal_status);
-				motor_calibrate(&position);
-				cal_status.data[0] = CAL_FINISHED;
-				can_transmit(cal_status);
-				GAMESTATE = PREGAME;
-			//}
+			cal_status.data[0] = CAL_INITIATED;
+			can_transmit(cal_status);
+			motor_calibrate(&position);
+			cal_status.data[0] = CAL_FINISHED;
+			can_transmit(cal_status);
+			GAMESTATE = PREGAME;
 		case PREGAME:
 			//Everything is handled at node 1
 			break;
@@ -130,12 +128,13 @@ void loop()
 					desired_position *= 9000/255;
 					position += motor_read();
 					integration_error += desired_position - position;
-					if ((((desired_position - position)/40) + integration_error/1000) > 0){
-						motor_write((((desired_position - position)/40) + integration_error/1000), 0);
+					if ((((desired_position - position)*K_P) + integration_error*K_I) > 0){
+						motor_write((((desired_position - position)*K_P) + integration_error*K_I), 0);
 					}
 					else{
-						motor_write(-(((desired_position - position)/40) + integration_error/1000), 1);
+						motor_write(-(((desired_position - position)*K_P) + integration_error*K_I), 1);
 					}
+					//pi_controller((uint8_t) -joystick[6], &position, &integration_error);
 					break;
 			}
 			if (!joystick[4]){
@@ -144,7 +143,7 @@ void loop()
 				digitalWrite(SOLENOIDPIN, HIGH);
 			}
 			if (ir_read() < IRLIMIT){
-				Timer3.detachInterrupt();
+				Timer3.detachInterrupt();			
 				GAMESTATE = POSTGAME;
 				for (uint8_t i = 0; i < msg_settings.length; i++){
 					msg_settings.data[i] = settings[i];
@@ -161,10 +160,7 @@ void loop()
 			break;
 		case POSTGAME:
 			motor_write(0,0);
-			game_time = 0;			
+			game_time = 0;
 			break;
 	}
-	//printf("IR: %d\n", ir_read());
-	//printf("Encoder: %d\n", motor_read());
-	
 }

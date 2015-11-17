@@ -138,6 +138,12 @@
     <Compile Include="font_8x8.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="fsm.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="fsm.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="MCP2515.h">
       <SubType>compile</SubType>
     </Compile>
