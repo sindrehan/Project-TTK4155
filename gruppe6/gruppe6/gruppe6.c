@@ -31,7 +31,9 @@ int main(void)
 							MULTICARD  // Joystick type
 	};
 	
-	uint8_t time[] = { 0,0,0 };	
+	uint8_t time[] = {	0,		//Minutes
+						0,		//Seconds
+						0 };	//Hundredths
 		
 	uint8_t prev_dir = NEUTRAL;
 	
@@ -40,7 +42,7 @@ int main(void)
 	can_message_t msg_commands = (can_message_t){
 		.id = 0x01,
 		.length = 7,
-		.data = {0,0,	//x, y joystick
+		.data = {0,0,	//x, y Joystick
 				 0,0,	//Left-, Right button
 				 0,		//Joystick button
 				 0,0,	//Left-, Right slider
@@ -53,7 +55,7 @@ int main(void)
 		can_message_t msg_received = can_receive();
 		switch (msg_received.id){
 			case 0x02: //State update
-				menu_change_gamestate(settings, msg_received.data[0]);
+				fsm_change_state(settings, msg_received.data[0]);
 				printf("Msg received: %d\n", msg_received.data[0]);
 				break;
 			case 0x03: //Game time update
@@ -75,13 +77,13 @@ int main(void)
 			case CALIBRATE:
 				menu_print_calibrate(calibration_status);
 				if (calibration_status == CAL_FINISHED){
-					menu_change_gamestate(settings, PREGAME);
+					fsm_change_state(settings, PREGAME);
 				}
 				break;
 			case PREGAME:
 				menu_print_pregame();
 				if (!JOY_button(2)){ //Start
-					menu_change_gamestate(settings, INGAME);
+					fsm_change_state(settings, INGAME);
 				}
 				break;
 			case INGAME:
@@ -101,10 +103,10 @@ int main(void)
 			case POSTGAME:
 				menu_print_postgame(time);
 				if (JOY_button(0)){
-					menu_change_gamestate(settings, PREGAME);
+					fsm_change_state(settings, PREGAME);
 				}
 				if (Joy_getDirection() == LEFT){
-					menu_change_gamestate(settings, MAINMENU);
+					fsm_change_state(settings, MAINMENU);
 					current_menu = main_menu;
 				}
 				if (GAMESTATE != POSTGAME){

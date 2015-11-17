@@ -6,10 +6,10 @@
 #include <stdio.h>
 
 void SPI_init(void);
-void SPI_transmit(char cData);
-char SPI_receive();
-void SPI_enable();
-void SPI_disable();
+void SPI_transmit(uint8_t cData);
+uint8_t SPI_receive(void);
+void SPI_enable(void);
+void SPI_disable(void);
 
 
 #endif /* SPI_driver_H_ */

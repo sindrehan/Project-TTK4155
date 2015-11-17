@@ -14,7 +14,7 @@ menuitem* menu_right(menuitem* m, uint8_t *setup){
 	uint8_t arrow_index = menu_arrow_index(m);
 	if(m->submenus.entries[arrow_index]->submenus.number != 0){
 		return m->submenus.entries[arrow_index];
-	} else {
+		} else {
 		m->submenus.entries[arrow_index]->fn(arrow_index, setup);
 		return m->parent;
 	}
@@ -23,7 +23,7 @@ menuitem* menu_right(menuitem* m, uint8_t *setup){
 menuitem* menu_left(menuitem* m){
 	if(m->parent){
 		return m->parent;
-	} else {
+		} else {
 		return m;
 	}
 }
@@ -56,18 +56,18 @@ menuitem* menu_new(char* name, uint8_t numSubmenus, void fn(uint8_t, uint8_t *))
 	return m;
 }
 
-void menu_new_game(uint8_t choice, uint8_t *setup){
-	printf("en gang\n");
+void menu_new_game(uint8_t choice, uint8_t *setup)
+{
 	can_message_t msg_setup = (can_message_t){
 		.id = 0x02,
 		.length = 3,
-		.data = {	setup[0],  //Game state
-					setup[1],	//Control type
-					setup[2],	//Controller
+		.data = {	setup[0],	//Game state
+			setup[1],	//Control type
+			setup[2],	//Controller
 		},
 	};
 	can_transmit(msg_setup);
-	menu_change_gamestate(setup, CALIBRATE);
+	fsm_change_state(setup, CALIBRATE);
 }
 
 void menu_control_select(uint8_t choice, uint8_t *setup){
@@ -81,14 +81,14 @@ void menu_joystick_select(uint8_t choice, uint8_t *setup){
 menuitem* menu_init(){
 
 	menuitem* main_menu = menu_new("Main menu", 2, NULL);
-		main_menu->submenus.entries[0] = menu_new("New game", 0, &menu_new_game);
-		main_menu->submenus.entries[1] = menu_new("Options", 2, NULL);
-			main_menu->submenus.entries[1]->submenus.entries[0] = menu_new("Joystick type", 2, NULL);
-				main_menu->submenus.entries[1]->submenus.entries[0]->submenus.entries[0] = menu_new("Dualshock3", 0, &menu_joystick_select);
-				main_menu->submenus.entries[1]->submenus.entries[0]->submenus.entries[1] = menu_new("Multifunction Card", 0, &menu_joystick_select); 
-			main_menu->submenus.entries[1]->submenus.entries[1] = menu_new("Method of control", 2, NULL);
-				main_menu->submenus.entries[1]->submenus.entries[1]->submenus.entries[0] = menu_new("Speed", 0, &menu_control_select);
-				main_menu->submenus.entries[1]->submenus.entries[1]->submenus.entries[1] = menu_new("Position", 0, &menu_control_select);
+	main_menu->submenus.entries[0] = menu_new("New game", 0, &menu_new_game);
+	main_menu->submenus.entries[1] = menu_new("Options", 2, NULL);
+	main_menu->submenus.entries[1]->submenus.entries[0] = menu_new("Joystick type", 2, NULL);
+	main_menu->submenus.entries[1]->submenus.entries[0]->submenus.entries[0] = menu_new("Dualshock3", 0, &menu_joystick_select);
+	main_menu->submenus.entries[1]->submenus.entries[0]->submenus.entries[1] = menu_new("Multifunction Card", 0, &menu_joystick_select);
+	main_menu->submenus.entries[1]->submenus.entries[1] = menu_new("Method of control", 2, NULL);
+	main_menu->submenus.entries[1]->submenus.entries[1]->submenus.entries[0] = menu_new("Speed", 0, &menu_control_select);
+	main_menu->submenus.entries[1]->submenus.entries[1]->submenus.entries[1] = menu_new("Position", 0, &menu_control_select);
 
 	menu_assign_parents_stdArrow(main_menu);
 	return main_menu;
@@ -98,7 +98,7 @@ void menu_assign_parents_stdArrow(menuitem* m){
 	for(uint8_t idx = 0; idx < m->submenus.number; idx++){
 		m->submenus.entries[idx]->parent = m;
 		if (idx == 0){
-			m->submenus.entries[0]->arrow_flag = 1;	
+			m->submenus.entries[0]->arrow_flag = 1;
 		}
 		if(m->submenus.number > 0){
 			menu_assign_parents_stdArrow(m->submenus.entries[idx]);
@@ -119,44 +119,44 @@ void menu_print_mainmenu(menuitem* m)
 		}
 		else{
 			OLED_print_string("  ");
-		}		
+		}
 		OLED_print_string(m->submenus.entries[i]->name);
 		OLED_clear_rest_of_line();
 	}
 }
 
 menuitem* menu_move(menuitem* m, uint8_t* prev_dir, uint8_t *settings)
-{	
+{
 	switch(Joy_getDirection()){
 		case UP:
-			if (*prev_dir == NEUTRAL){
-				*prev_dir = UP;
-				menu_up(m);
-			}
-			return m;
-			break;
+		if (*prev_dir == NEUTRAL){
+			*prev_dir = UP;
+			menu_up(m);
+		}
+		return m;
+		break;
 		case DOWN:
-			if (*prev_dir == NEUTRAL){
-				*prev_dir = DOWN;
-				menu_down(m);
-			}
-			return m;
-			break;
+		if (*prev_dir == NEUTRAL){
+			*prev_dir = DOWN;
+			menu_down(m);
+		}
+		return m;
+		break;
 		case RIGHT:
-			if (*prev_dir == NEUTRAL){
-				*prev_dir = RIGHT;
-				return menu_right(m, settings);
-			}
-			break;
+		if (*prev_dir == NEUTRAL){
+			*prev_dir = RIGHT;
+			return menu_right(m, settings);
+		}
+		break;
 		case LEFT:
-			if (*prev_dir == NEUTRAL){
-				*prev_dir = LEFT;
-				return menu_left(m);
-			}
-			break;
+		if (*prev_dir == NEUTRAL){
+			*prev_dir = LEFT;
+			return menu_left(m);
+		}
+		break;
 		default:
-			*prev_dir = NEUTRAL;
-			
+		*prev_dir = NEUTRAL;
+		
 		break;
 	}
 	return m;
@@ -184,7 +184,8 @@ void menu_print_calibrate(uint8_t cal_status){
 	
 }
 
-void menu_print_pregame(){
+void menu_print_pregame(void)
+{
 	OLED_pos(0,0);
 	OLED_print_string("Instructions:\n");
 	OLED_pos(1, 0);
@@ -220,6 +221,6 @@ void menu_print_postgame(uint8_t *time){
 	OLED_print_string("Press reset to try again\n");
 	OLED_pos(7,0);
 	OLED_print_string("or left to return to main\n");
-		
+	
 }
 

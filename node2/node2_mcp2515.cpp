@@ -14,7 +14,8 @@ uint8_t MCP2515_read(uint8_t address)
 	return data;
 }
 
-void MCP2515_write(char data, char address){
+void MCP2515_write(uint8_t data, uint8_t address)
+{
 	SPI_enable();
 	SPI_transmit(MCP_WRITE);
 	SPI_transmit(address);
@@ -22,7 +23,8 @@ void MCP2515_write(char data, char address){
 	SPI_disable();
 }
 
-void MCP2515_rts(char rts_port){
+void MCP2515_rts(uint8_t rts_port)
+{
 	SPI_enable();
 	switch (rts_port){
 		case 0:
@@ -38,15 +40,17 @@ void MCP2515_rts(char rts_port){
 	SPI_disable();
 }
 
-char MCP2515_read_status(){
+char MCP2515_read_status(void)
+{
 	SPI_enable();
 	SPI_transmit(MCP_READ_STATUS);
-	char status = SPI_receive();
+	uint8_t status = SPI_receive();
 	SPI_disable();
 	return status;
 }
 
-void MCP2515_bit_modify(char address, char mask, char data){
+void MCP2515_bit_modify(uint8_t address, uint8_t mask, uint8_t data)
+{
 	SPI_enable();
 	SPI_transmit(MCP_BITMOD);
 	SPI_transmit(address);
@@ -55,7 +59,8 @@ void MCP2515_bit_modify(char address, char mask, char data){
 	SPI_disable();
 }
 
-void MCP2515_reset(){
+void MCP2515_reset(void)
+{
 	SPI_enable();
 	SPI_transmit(MCP_RESET);
 	SPI_disable();

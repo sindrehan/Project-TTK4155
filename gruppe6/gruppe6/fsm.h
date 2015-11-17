@@ -6,7 +6,7 @@
 #include "can.h"
 #include "definitions.h"
 
-void menu_change_gamestate(uint8_t *settings, uint8_t state);
+void fsm_change_state(uint8_t *settings, uint8_t state);
 
 
 #endif /* FSM_H_ */

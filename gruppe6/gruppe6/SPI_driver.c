@@ -7,22 +7,26 @@ void SPI_init(void){
 	SPCR = (1<<SPE)|(1<<MSTR)|(1<<SPR0);
 }
 
-void SPI_transmit(char cData){
+void SPI_transmit(uint8_t cData)
+{
 	/* Start transmission */
 	SPDR = cData;
 	/* Wait for transmission complete */
 	while(!(SPSR & (1<<SPIF)));
 }
 
-char SPI_receive(){
+uint8_t SPI_receive(void)
+{
 	SPI_transmit(0x00);
 	return SPDR;
 }
 
-void SPI_enable(){
+void SPI_enable(void)
+{
 		PORTB &= ~(1<<PINB4);
 }
 
-void SPI_disable(){
+void SPI_disable(void)
+{
 	PORTB |= (1<<PINB4);
 }

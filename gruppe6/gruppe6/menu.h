@@ -40,7 +40,7 @@ void menu_joystick_select(uint8_t choice, uint8_t *setup);
 void menu_print_ingame(uint8_t *time);
 void menu_print_calibrate(uint8_t cal_status);
 
-void menu_print_pregame();
+void menu_print_pregame(void);
 void menu_print_postgame(uint8_t *time);
 
 

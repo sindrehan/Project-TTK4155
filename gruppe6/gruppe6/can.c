@@ -21,14 +21,15 @@ void can_transmit(can_message_t msg){
 	MCP2515_write((msg.id >> 3), MCP_TXB0SIDH);
 	MCP2515_write((msg.id << 5), MCP_TXB0SIDL);
 	MCP2515_write(msg.length, MCP_TXB0DLC);
-	for (int i = 0; i < msg.length; i++){
+	for (uint8_t i = 0; i < msg.length; i++){
 		MCP2515_write(msg.data[i], MCP_TXB0D0+i);
 	}
 	MCP2515_rts(0);
 	
 }
 
-can_message_t can_receive(){
+can_message_t can_receive(void)
+{
 	can_message_t msg  = {0};
 		
 	if (MCP2515_read(MCP_CANINTF) & (MCP_RX0IF)){
@@ -38,7 +39,7 @@ can_message_t can_receive(){
 		high *= 0b1000;
 		msg.id = high + low;
 		msg.length = (MCP2515_read(MCP_RXB0DLC)) & (0x0f);
-		for (int i = 0; i < msg.length; i++){
+		for (uint8_t i = 0; i < msg.length; i++){
 			msg.data[i] = MCP2515_read(MCP_RXB0D0 + i);
 		}
 		rxbuffer = 0;

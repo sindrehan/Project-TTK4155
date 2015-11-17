@@ -25,11 +25,11 @@ typedef struct {
 } JOY_position_t;
 	
 
-void JOY_init();
-void JOY_calibrate();
+void JOY_init(void);
+void JOY_calibrate(void);
 uint8_t JOY_button(uint8_t button);
-JOY_position_t JOY_getPosition();
-JOY_direction_t Joy_getDirection();
+JOY_position_t JOY_getPosition(void);
+JOY_direction_t Joy_getDirection(void);
 
 
 

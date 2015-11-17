@@ -13,7 +13,8 @@ const unsigned char* font = (unsigned char*)font_1;
 
 
 
-void OLED_init(){
+void OLED_init(void)
+{
 	MCUCR |= (1<<SRE);
 	SFIOR |= (1<<XMM2);
 	
@@ -46,56 +47,64 @@ void OLED_init(){
 	OLED_home();
 }	
 
-void OLED_command(char c){
-	volatile char* OLED_c = (char*) 0x1000;
+void OLED_command(uint8_t c)
+{
+	volatile uint8_t* OLED_c = (uint8_t*) 0x1000;
 	*OLED_c = c;
 }
 
-void OLED_data(char c){
-	volatile char* OLED_c = (char*) 0x1200;
-	*OLED_c = c; 
+void OLED_data(uint8_t c)
+{
+	volatile uint8_t* OLED_c = (uint8_t*) 0x1200;
+	*OLED_c = c;
 }
 
-void OLED_go_to_page(char page)
+void OLED_go_to_page(uint8_t page)
 {
 	OLED_command(0xB0+page);
 	current_page = page;
 }
 
-void OLED_clear_page(char page){
+void OLED_clear_page(uint8_t page)
+{
 	OLED_go_to_page(page);
-	for(int i = 0; i < 128; i++){
+	for(uint8_t i = 0; i < 128; i++){
 		OLED_data(0x00);
 	}
 }
 
-void OLED_reset(){
-	for (int i = 0; i < 8; i++){
+void OLED_reset(void)
+{
+	for (uint8_t i = 0; i < 8; i++){
 		OLED_clear_page(i);
 	}
 }
 
-void OLED_home(){
+void OLED_home(void)
+{
 	OLED_go_to_page(0);
 	OLED_go_to_col(0);
 }
 
-void OLED_pos(char page, char column){
+void OLED_pos(uint8_t page, uint8_t column)
+{
 	OLED_go_to_page(page);
 	OLED_go_to_col(column);
 }
 
-void OLED_go_to_col(char column){
-	char msb = column & 0b11110000;
+void OLED_go_to_col(uint8_t column)
+{
+	uint8_t msb = column & 0b11110000;
 	msb /= 0b10000;
-	char lsb = column & 0b00001111;
+	uint8_t lsb = column & 0b00001111;
 	OLED_command(msb+0b00010000);
 	OLED_command(lsb);
 	current_column = column;
 }
 
-void OLED_clear_rest_of_line(){
-	for (int i = current_column; i < 128; i++ ){
+void OLED_clear_rest_of_line(void)
+{
+	for (uint8_t i = current_column; i < 128; i++ ){
 		OLED_data(0);
 	}
 	current_column = 0;
@@ -106,7 +115,7 @@ void OLED_print(char character){
 		OLED_clear_rest_of_line();
 	}
 	else{
-		for (int i = 0; i < char_width; i++){
+		for (uint8_t i = 0; i < char_width; i++){
 			char byte = pgm_read_byte((font + (character-32)*char_width + i));
 			OLED_data(byte);
 		}
@@ -120,7 +129,7 @@ void OLED_print(char character){
 }
 
 void OLED_print_string(char string[]){
-	for(int i = 0; i < strlen(string); i++){
+	for(uint8_t i = 0; i < strlen(string); i++){
 		OLED_print(string[i]);
 	}
 }

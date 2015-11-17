@@ -3,7 +3,8 @@
 
 #include "test.h"
 
-void test_adc(){
+void test_adc(void)
+{
 	ADC_init();
 	while (1)
 	{
@@ -30,7 +31,8 @@ void test_adc(){
 	}
 }
 
-void test_joystick(){
+void test_joystick(void)
+{
 	JOY_init();
 	while(1){
 		JOY_position_t XY  = JOY_getPosition();
@@ -87,7 +89,8 @@ void test_joystick(){
 	//}
 //}
 
-void test_mcp(){
+void test_mcp(void)
+{
 	SPI_init();
 	for (char i = 'a'; i<='z'; i++){
 		printf("Memory 0x36: %c\n", MCP2515_read(0x36));
@@ -97,7 +100,8 @@ void test_mcp(){
 	}
 }
 
-void test_can(){
+void test_can(void)
+{
 	can_init(MODE_LOOPBACK);
 	can_message_t testmelding  = (can_message_t){
 		.id = 0xff,

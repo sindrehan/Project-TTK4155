@@ -7,7 +7,7 @@
 #include "node2_test.h"
 
 
-void CAN_test()
+void CAN_test(void)
 {
 	
 	can_message_t testmelding  = (can_message_t){
@@ -36,7 +36,7 @@ void CAN_test()
 }
 
 
-void MCP_test()
+void MCP_test(void)
 {
 	SPI_init();
 	for (char i = 'a'; i<='f'; i++){

@@ -6,7 +6,7 @@
 #include "node2_spi.h"
 #include "node2_can.h"
 
-void CAN_test();
-void MCP_test();
+void CAN_test(void);
+void MCP_test(void);
 
 #endif /* NODE2_TEST_H_ */

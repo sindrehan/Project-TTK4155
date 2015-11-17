@@ -9,7 +9,8 @@
 #include "adc_driver.h"
 uint8_t JOY_x_init_pos, JOY_y_init_pos;
 
-void JOY_init(){
+void JOY_init(void)
+{
 	ADC_init();
 	
 	DDRB &= ~(1<<PINB0) & ~(1<<PINB1) & ~(1<<PINB2);
@@ -18,7 +19,8 @@ void JOY_init(){
 	JOY_calibrate();
 }
 
-void JOY_calibrate(){
+void JOY_calibrate(void)
+{
 	JOY_x_init_pos = ADC_read(0);
 	JOY_y_init_pos = ADC_read(1);
 }
@@ -37,7 +39,8 @@ uint8_t JOY_button(uint8_t button)
 	}
 }
 
-JOY_position_t JOY_getPosition(){
+JOY_position_t JOY_getPosition(void)
+{
 	int x_pos = (ADC_read(0)-JOY_x_init_pos)*100/127;
 	int y_pos = (ADC_read(1)-JOY_y_init_pos)*100/127;
 	JOY_position_t result;
@@ -46,7 +49,8 @@ JOY_position_t JOY_getPosition(){
 	return result;
 }
 
-JOY_direction_t Joy_getDirection(){
+JOY_direction_t Joy_getDirection(void)
+{
 	JOY_position_t position = JOY_getPosition();
 	JOY_direction_t direction;
 	int limit = 45;

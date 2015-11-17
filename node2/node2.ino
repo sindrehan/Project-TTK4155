@@ -1,4 +1,3 @@
-#include "fsm.h"
 
 #include <stdio.h>
 #include <Arduino.h>
@@ -14,7 +13,7 @@
 #include "node2_servo.h"
 #include "node2_ir.h"
 #include "node2_motorctrl.h"
-#include "fsm.h"
+
 
 
 uint32_t game_time = 0;
@@ -37,7 +36,9 @@ can_message_t cal_status  = (can_message_t){
 can_message_t msg_settings  = (can_message_t){
 	.id = 0x02,
 	.length = 3,
-	.data = { 0,0,0,},
+	.data = {	0,		//Game state
+				0,		//Control method
+				0,},	//Joystick type
 };
 
 static int uart_putchar (char c, FILE *stream){
@@ -47,14 +48,22 @@ static int uart_putchar (char c, FILE *stream){
 static FILE uartout;
 
 Servo servo;
-uint8_t informed = 0;
-int16_t position = 0;
-int16_t desired_position = 0;
-uint8_t mode = 0;
-int16_t integration_error = 0;
 
-uint8_t settings[] = { 0,0,0 };
-int8_t joystick[] = { 0,0,0,0,0,0,0};
+//PI-controller variables
+int16_t real_position = 0;
+int16_t integration_error = 0;
+int16_t ref_position = 0;
+
+
+
+uint8_t settings[] = {	0,		//Game state
+						0,		//Control method
+						0 };	//Joystick type
+
+int8_t joystick[] = {	0,0,	//x, y joystick
+						0,0,	//Left-, Right button
+						0,		//Joystick button
+						0,0};	//Left-, Right slider
 
 void setup()
 {
@@ -73,8 +82,6 @@ void setup()
 
 void loop()
 {	
-	//position += motor_read();
-	//printf("Encoder : %d\n", position);
 	
 	can_message_t msg = can_receive();
 	switch (msg.id){
@@ -88,11 +95,10 @@ void loop()
 				if (settings[i] != msg.data[i]){
 					settings[i] = msg.data[i];
 				}
-				
 			}
 		break;
 	}
-	//can_printmsg(msg);
+	
 	if (JOYSTICKTYPE == DUALSHOCK3){
 		//Place dualshock values in joystick array
 	}
@@ -103,7 +109,7 @@ void loop()
 		case CALIBRATE:
 			cal_status.data[0] = CAL_INITIATED;
 			can_transmit(cal_status);
-			motor_calibrate(&position);
+			motor_calibrate(&real_position);
 			cal_status.data[0] = CAL_FINISHED;
 			can_transmit(cal_status);
 			GAMESTATE = PREGAME;
@@ -112,8 +118,8 @@ void loop()
 			break;
 		case INGAME:
 			Timer3.attachInterrupt(gametime_counter);
-			//Convert from  X = ? 100 % to 0 - 180 degrees
-			servo.write((int) (( ((float)(-1)*joystick[0]) / 100)*90)+90);
+			//Convert from  X = (-100) % - 100 % to 0 - 180 degrees
+			servo.write((uint8_t) (( ((float)(-1)*joystick[0]) / 100)*90)+90);
 			switch (CTRLTYPE) {
 				case SPEEDCTRL:
 					if (joystick[1] > 0){
@@ -124,17 +130,17 @@ void loop()
 					}
 					break;
 				case POSCTRL:
-					desired_position = (uint8_t) -joystick[6];
-					desired_position *= 9000/255;
-					position += motor_read();
-					integration_error += desired_position - position;
-					if ((((desired_position - position)*K_P) + integration_error*K_I) > 0){
-						motor_write((((desired_position - position)*K_P) + integration_error*K_I), 0);
+					ref_position = (uint8_t) -joystick[6];
+					ref_position *= 9000/255;
+					real_position += motor_read();
+					integration_error += ref_position - real_position;
+					int16_t gain = (((ref_position - real_position)*K_P) + integration_error*K_I);
+					if (gain > 0){
+						motor_write(gain, 0);
 					}
 					else{
-						motor_write(-(((desired_position - position)*K_P) + integration_error*K_I), 1);
+						motor_write(-gain, 1);
 					}
-					//pi_controller((uint8_t) -joystick[6], &position, &integration_error);
 					break;
 			}
 			if (!joystick[4]){
@@ -152,9 +158,10 @@ void loop()
 				
 			} 
 			else {
-				time.data[0] = game_time/6000;
-				time.data[1] = (game_time/100) % 60;
-				time.data[2] = game_time % 100;
+				//Update time
+				time.data[0] = game_time/6000;			//Minutes
+				time.data[1] = (game_time/100) % 60;	//Seconds
+				time.data[2] = game_time % 100;			//Hundredths
 				can_transmit(time);
 			}
 			break;

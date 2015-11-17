@@ -16,15 +16,18 @@ void SPI_transmit(uint8_t cData){
 	while(!(SPSR & (1<<SPIF)));
 }
 
-uint8_t SPI_receive(){
+uint8_t SPI_receive(void)
+{
 	SPI_transmit(0x00);
 	return SPDR;
 }
 
-void SPI_enable(){
+void SPI_enable(void)
+{
 	PORTB &= ~(1<<PB0);
 }
 
-void SPI_disable(){
+void SPI_disable(void)
+{
 	PORTB |= (1<<PB0);
 }

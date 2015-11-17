@@ -15,7 +15,6 @@ void UART_Init( uint16_t ubrr)
 	fdevopen((int (*)(char, struct __file*))&UART_Transmit, (int (*)(struct __file*))&UART_Receive);
 }
 
-
 void UART_Transmit( unsigned char data ){
 	//Wait for empty transmit buffer
 	while( !( UCSR0A & (1<<UDRE0)) );
@@ -24,7 +23,8 @@ void UART_Transmit( unsigned char data ){
 	UDR0 = data;
 }
 
-unsigned char UART_Receive( void){
+unsigned char UART_Receive(void)
+{
 	//Wait for data to be received
 	while( !(UCSR0A & (1<<RXC0)) );
 	//Get and return received data from buffer

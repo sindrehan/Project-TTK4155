@@ -13,10 +13,10 @@
 #include "can.h"
 
 
-void test_adc();
-void test_joystick();
-//void test_oled_menu();
-void test_mcp();
-void test_can();
+void test_adc(void);
+void test_joystick(void);
+//void test_oled_menu(void);
+void test_mcp(void);
+void test_can(void);
 
 #endif /* TEST_H_ */
