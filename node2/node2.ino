@@ -107,7 +107,7 @@ void loop()
 			}
 		break;
 	}
-	if (JOYSTICKTYPE == DUALSHOCK3){
+	if (JOYSTICKTYPE == DUALSHOCK3 && GAMESTATE == INGAME){
 		if (Serial.available() < 20){
 			Serial.write('1');
 			Serial.write('0');
@@ -117,11 +117,8 @@ void loop()
 			for(uint8_t i = 0; i < 5; i++){
 				joystick[i] = Serial.read();
 			}
-			joystick[5] = joystick[0];
-			joystick[6] = joystick[1];
-		}
-		for (uint8_t i = 0; i<7; i++){
-			msg_joystick.data[i] = joystick[i]
+			joystick[5] = (joystick[0]+101)*250/200;
+			joystick[6] = (joystick[1]+101)*250/200;
 		}
 	}
 	switch (GAMESTATE) {

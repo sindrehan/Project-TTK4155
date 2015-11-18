@@ -128,10 +128,10 @@ int main(void)
 
 Nødvending:
 	 4 Rydd opp minibreadboard
-	 5 Typesetting ( char -> uint8 )
-	 6 Navngiving
+	 check 5 Typesetting ( char -> uint8 )
+	 check 6 Navngiving
 	 7 Definer konstanter på en ryddig og oversiktlig måte
-	 8 Se om det er mulig å minimere antall globale variable
+	 check 8 Se om det er mulig å minimere antall globale variable
 
 Eventuelt: 
 	 1 Dokumentasjon (Kommentarer, UML?)
