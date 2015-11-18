@@ -41,6 +41,15 @@ can_message_t msg_settings  = (can_message_t){
 				0,},	//Joystick type
 };
 
+//can_message_t msg_joystick  = (can_message_t){
+	//.id = 0x01,
+	//.length = 7,
+	//.data = {	0,0,	//x, y joystick
+				//0,0,	//Left-, Right button
+				//0,		//Joystick button
+				//0,0},	//Joystick type
+//};
+
 static int uart_putchar (char c, FILE *stream){
 	Serial.write(c);
 	return 0;
@@ -58,7 +67,7 @@ int16_t ref_position = 0;
 
 uint8_t settings[] = {	0,		//Game state
 						0,		//Control method
-						0 };	//Joystick type
+						1 };	//Joystick type
 
 int8_t joystick[] = {	0,0,	//x, y joystick
 						0,0,	//Left-, Right button
@@ -67,7 +76,7 @@ int8_t joystick[] = {	0,0,	//x, y joystick
 
 void setup()
 {
-	Serial.begin(9600);
+	Serial.begin(115200);
 	fdev_setup_stream(&uartout, uart_putchar, NULL, _FDEV_SETUP_WRITE);
 	stdout = &uartout;
 	
@@ -98,9 +107,22 @@ void loop()
 			}
 		break;
 	}
-	
 	if (JOYSTICKTYPE == DUALSHOCK3){
-		//Place dualshock values in joystick array
+		if (Serial.available() < 20){
+			Serial.write('1');
+			Serial.write('0');
+		}
+		while(Serial.available() > 4){
+			
+			for(uint8_t i = 0; i < 5; i++){
+				joystick[i] = Serial.read();
+			}
+			joystick[5] = joystick[0];
+			joystick[6] = joystick[1];
+		}
+		for (uint8_t i = 0; i<7; i++){
+			msg_joystick.data[i] = joystick[i]
+		}
 	}
 	switch (GAMESTATE) {
 		case MAINMENU:
@@ -119,7 +141,7 @@ void loop()
 		case INGAME:
 			Timer3.attachInterrupt(gametime_counter);
 			//Convert from  X = (-100) % - 100 % to 0 - 180 degrees
-			servo.write((uint8_t) (( ((float)(-1)*joystick[0]) / 100)*90)+90);
+			servo.write((int8_t) (( ((float)(-1)*joystick[0]) / 100)*90)+90);
 			switch (CTRLTYPE) {
 				case SPEEDCTRL:
 					if (joystick[1] > 0){

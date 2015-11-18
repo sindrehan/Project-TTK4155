@@ -39,7 +39,7 @@ int main(void)
 	
 	uint8_t calibration_status = CAL_UNINITIATED;
 
-	can_message_t msg_commands = (can_message_t){
+	can_message_t msg_joystick = (can_message_t){
 		.id = 0x01,
 		.length = 7,
 		.data = {0,0,	//x, y Joystick
@@ -54,6 +54,8 @@ int main(void)
 	while(1){
 		can_message_t msg_received = can_receive();
 		switch (msg_received.id){
+			//case 0x01:
+				//for 
 			case 0x02: //State update
 				fsm_change_state(settings, msg_received.data[0]);
 				printf("Msg received: %d\n", msg_received.data[0]);
@@ -90,14 +92,14 @@ int main(void)
 				menu_print_ingame(time);
 				if (JOYSTICKTYPE == MULTICARD){
 					pos = JOY_getPosition();
-					msg_commands.data[0] = pos.x;
-					msg_commands.data[1] = pos.y;
-					msg_commands.data[2] = JOY_button(0);
-					msg_commands.data[3] = JOY_button(1);
-					msg_commands.data[4] = JOY_button(2);
-					msg_commands.data[5] = ADC_read(2);
-					msg_commands.data[6] = ADC_read(3);
-					can_transmit(msg_commands);
+					msg_joystick.data[0] = pos.x;
+					msg_joystick.data[1] = pos.y;
+					msg_joystick.data[2] = JOY_button(0);
+					msg_joystick.data[3] = JOY_button(1);
+					msg_joystick.data[4] = JOY_button(2);
+					msg_joystick.data[5] = ADC_read(2);
+					msg_joystick.data[6] = ADC_read(3);
+					can_transmit(msg_joystick);
 				}
 				break;
 			case POSTGAME:
